@@ -1,9 +1,0 @@
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/4/rss2.xml
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/3/rss2.xml
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/1/rss2.xml
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/60/rss2.xml
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/64/rss2.xml
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/69/rss2.xml
-python lib/python/rss.py https://www.jsports.co.jp/press/column/title/71/rss2.xml
-python lib/python/rss.py http://www.jsports.co.jp/foot/index.xml
-python lib/python/rss.py http://www.jsports.co.jp/football/jleague/blog/atom.xml

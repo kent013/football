@@ -14,5 +14,5 @@ with open('models/tokenized.pickle', mode='rb') as f:
     trainings = pickle.load(f)
 
 print('Start training')
-m = Doc2Vec(documents=trainings, dm=1, vector_size=500, window=10, min_count=3, sample=10, alpha=0.1, epochs=55)
+m = Doc2Vec(documents=trainings, dm=1, vector_size=500, window=5, min_count=2, sample=8, alpha=0.1, epochs=55)
 m.save("models/doc2vec.model")

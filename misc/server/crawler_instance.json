@@ -1,0 +1,25 @@
+{
+    "ImageId": "ami-1cb0ad72",
+    "KeyName": "kentaro",
+    "SecurityGroupIds": [
+        "sg-10cd2b74"
+    ],
+    "InstanceType": "t2.micro",
+    "Placement": {
+        "AvailabilityZone": "ap-northeast-1a"
+    },
+    "BlockDeviceMappings": [
+        {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+                "VolumeSize": 24,
+                "DeleteOnTermination": true,
+                "VolumeType": "gp2"
+            }
+        }
+    ],
+    "Monitoring": {
+        "Enabled": true
+    },
+    "SubnetId": "subnet-5ab6332d"
+}

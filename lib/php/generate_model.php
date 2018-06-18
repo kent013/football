@@ -49,7 +49,11 @@ EOS;
                 $column_type = "DateTime";
             }
             $nullable_bool = $nullable ? "True" : "False";
-            $model .= "    $property = Column($column_type, nullable=$nullable_bool)\n";
+            if(in_array($property, ["created_at", "updated_at"])){
+                $model .= "    $property = Column($column_type, default=datetime.now())\n";
+            }else{
+                $model .= "    $property = Column($column_type, nullable=$nullable_bool)\n";
+            }
         }
         $item .= "    $property = scrapy.Field()\n";
     }
@@ -69,7 +73,7 @@ import football.settings
 from pprint import pprint
 import codecs
 import os
-import datetime
+from datetime import datetime
 
 
 DeclarativeBase = declarative_base()

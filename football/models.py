@@ -9,7 +9,7 @@ import football.settings
 from pprint import pprint
 import codecs
 import os
-import datetime
+from datetime import datetime
 
 
 DeclarativeBase = declarative_base()
@@ -42,8 +42,8 @@ class SiteCategories(DeclarativeBase):
 
     id = Column(Integer, primary_key=True)
     display_name = Column(String, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
 
 class SiteTypes(DeclarativeBase):
     """Sqlalchemy model for site_types table"""
@@ -51,8 +51,8 @@ class SiteTypes(DeclarativeBase):
 
     id = Column(Integer, primary_key=True)
     display_name = Column(String, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
 
 class Feeds(DeclarativeBase):
     """Sqlalchemy model for feeds table"""
@@ -67,8 +67,8 @@ class Feeds(DeclarativeBase):
     site_category_id = Column(Integer, nullable=False)
     site_type_id = Column(Integer, nullable=False)
     scraped_at = Column(DateTime, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
 
 class Articles(DeclarativeBase):
     """Sqlalchemy model for articles table"""
@@ -84,8 +84,8 @@ class Articles(DeclarativeBase):
     feed_id = Column(Integer, nullable=False)
     published_at = Column(DateTime, nullable=False)
     scraped_at = Column(DateTime, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
 
 class ArticleContents(DeclarativeBase):
     """Sqlalchemy model for article_contents table"""
@@ -96,5 +96,5 @@ class ArticleContents(DeclarativeBase):
     extracted_content = Column(String, nullable=False)
     article_hash = Column(String, nullable=False)
     content_hash = Column(String, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())

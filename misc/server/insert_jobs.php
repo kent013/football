@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set("UTC");
-require_once(dirname(__FILE__) . '/../lib/php/util.php');
+require_once(__DIR__ . '/../../lib/php/util.php');
 $pdo = _get_connection();
 #_info('inserting crawer_jobs...');
 

@@ -2,7 +2,9 @@
 import sys
 import os
 
-sys.path.append(os.path.dirname(__file__) + "/../../")
+script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+sys.path.append(script_dir + "/../../lib/python/")
+sys.path.append(script_dir + "/../../")
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine import ResultProxy

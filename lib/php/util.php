@@ -40,14 +40,10 @@ function _get_connection($tag = "DATABASE"){
     if($settings['drivername'] == 'postgres'){
         $dsn = "pgsql:dbname={$settings['database']} host={$settings['host']} port={$settings['port']}";
     }else if($settings['drivername'] == 'mysql'){
-        $dsn = "mysql:dbname={$settings['database']};host={$settings['host']};port={$settings['port']};charset=utf8";
+        $dsn = "mysql:host={$settings['host']};port={$settings['port']};dbname={$settings['database']};charset=utf8";
     }
     $pdo[$tag] = new PDO($dsn, $settings['username'], $settings['password']);
     $pdo[$tag]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    if($settings['drivername'] == 'mysql'){
-        $pdo[$tag]->exec("SET time_zone = 'UTC'");
-    }
     return $pdo[$tag];
 }
 function _get_setting($name, $default = null){

@@ -143,6 +143,9 @@ class AllSpider(CommonSpider):
                     article['published_at'] = datetime.fromtimestamp(mktime(entry.published_parsed))
                 article['scraped_at'] = self.crawler_job.started_at
 
+                if 'published_at' in article and article['published_at'] > datetime.now():
+                    article['published_at'] = datetime.now()
+
                 yield article
 
                 job = self.clone_job()

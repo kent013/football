@@ -16,10 +16,28 @@ from extractcontent3 import ExtractContent
 import math
 import re
 
+import argparse
+
+parser = argparse.ArgumentParser(
+  prog="extract_content",
+  usage="",
+  description="extract content from article",
+  epilog = "",
+  add_help = True,
+)
+
+parser.add_argument("-n","--new",
+  action = "store_true"
+)
+args = parser.parse_args()
+
 session_maker = sessionmaker(bind=db_connect())
 session = session_maker()
 
-results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
+if args.new:
+    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content == None).order_by(ArticleContents.id).all()
+else:
+    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 2).order_by(ArticleContents.id).all()
 
 #extractor = ExtractContent({"debug":True, 'threthold': 100})

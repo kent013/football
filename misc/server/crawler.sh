@@ -16,8 +16,8 @@ do
   if [ ! -e $PID_PATH ]; then
     touch $PID_PATH
     echo $$ > $PID_PATH
-    /home/ec2-user/.pyenv/versions/2.7.10/bin/python \
-      /home/ec2-user/.pyenv/versions/2.7.10/bin/scrapy \
+    /home/ec2-user/.pyenv/versions/3.5.4/bin/python \
+      /home/ec2-user/.pyenv/versions/3.5.4/bin/scrapy \
         crawl all \
           -a pid_path=$PID_PATH \
           -a notify=$CRAWLER_NOTIFY \

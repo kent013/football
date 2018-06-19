@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../lib/php/util.php');
 
-
 function _execAWSCommand($command){
     exec($command, $result);
     $result = implode($result, "\n");
@@ -76,12 +75,10 @@ function _listInstances($filter){
 
 }
 
-$instances = _listInstances('property_*,football_crawler*,pms_conductor');
+$instances = _listInstances('football_*');
 $names = [];
 
-$resolver = [
-    'football_crawler_1' => ['alias' => 'fc1', 'key' => 'kentaro.pem']
-];
+$resolver = json_decode(file_get_contents(__DIR__ . "/servers.json"), true);
 
 $category = _getArg('category', null);
 $group = _getArg('group', null);

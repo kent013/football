@@ -1,0 +1,5 @@
+{
+  "football_crawler_1":{"alias":"fc1","key":"kentaro.pem"},
+  "football_web":{"alias":"fw","key":"kentaro.pem"},
+  "football_analyzer":{"alias":"fa","key":"kentaro.pem"}
+}

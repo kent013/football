@@ -4,7 +4,7 @@ SCRIPTPATH=`dirname $SCRIPT`
 source $SCRIPTPATH/config.sh
 source $SCRIPTPATH/util.sh
 
-servers=("fc1")
+servers=`jq -r ".[].alias" $SCRIPTPATH/servers.json`
 
 CMDNAME=`basename $0`
 

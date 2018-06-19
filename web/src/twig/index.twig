@@ -1,0 +1,23 @@
+{% extends 'share/layout.twig' %}
+
+{% block title %}The Football Spot{% endblock %}
+
+{% block content %}
+{% for article in articles %}
+<div class="article">
+  <h3><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h3>
+  <p>
+    {% if article.summary %}
+      <span class="summary">{{ article.summary|truncate(50)|e }}</span>
+    {% else %}
+      <span class="summary">{{ article.title|truncate(50)|e }}</span>
+    {% endif %}
+  </p>
+  <p>
+    <span class="published_at">{{ article.published_at }}</span>
+    <img src="http://www.google.com/s2/favicons?domain={{ article.site_url }}">
+    <span class="site_title"><a href="{{ article.site_url}}", target="_blank">{{ article.site_title }}</a></span>
+  </p>
+</div>
+{% endfor %}
+{% endblock %}

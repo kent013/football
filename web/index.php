@@ -1,5 +1,5 @@
 <?php
-require_once("../misc/lib/php/util.php");
+require_once("../lib/php/util.php");
 $pdo = _get_connection();
 $results = $pdo->query("SELECT * FROM articles AS a ORDER BY published_at DESC LIMIT 500 ");
 $articles = $results->fetchAll(PDO::FETCH_ASSOC);

@@ -3,16 +3,21 @@
 {% block title %}The Football Spot{% endblock %}
 
 {% block content %}
+<article>
 {% for article in articles %}
-<div class="article">
-  <h3><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h3>
-    <img class="thumbnail" src="{{ article.thumbnail_url }}">
-  </p>
-  <p>
-    <span class="published_at">{{ article.published_at }}</span>
-    <img src="http://www.google.com/s2/favicons?domain={{ article.site_url }}">
-    <span class="site_title"><a href="{{ article.site_url}}", target="_blank">{{ article.site_title }}</a></span>
-  </p>
-</div>
+<section class="news">
+  <div class="media">
+    <img class="align-self-center mr-3 rounded news-img" src="{{ article.thumbnail_url }}">
+    <div class="media-body">
+      <h1 class="mt-0"><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h1>
+      <p class="mb-0">
+        <img class="align-middle" src="http://www.google.com/s2/favicons?domain={{ article.site_url }}">
+        <span class="site_title align-middle"><a href="{{ article.site_url}}", target="_blank">{{ article.site_title }}</a></span>
+        <span class="published_at align-middle">{{ article.published_at }}</span>
+      </p>
+    </div>
+  </div>
+</section>
 {% endfor %}
+</article>
 {% endblock %}

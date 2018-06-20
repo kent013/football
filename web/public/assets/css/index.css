@@ -1,3 +1,34 @@
 body {
   padding-top: 5rem;
 }
+
+section.news h1 {
+  font-size: 1.0rem;
+}
+section.news img.main_image {
+  height: 50px;
+  width: 50px;
+}
+
+section.news {
+  border: 0.2rem solid #f8f9fa;
+}
+
+section.news div.media {
+  padding: 0.5rem;
+}
+
+section.news:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+section.news span.site_title {
+  font-size: 0.7rem;
+}
+section.news span.published_at {
+  font-size: 0.7rem;
+}
+section.news img.news-img {
+  width: 50px;
+  height: 50px;
+}

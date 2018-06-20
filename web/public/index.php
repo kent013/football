@@ -12,11 +12,15 @@ function action_root() {
     $articles = $results->fetchAll();
     foreach($articles as $k => $article){
         if(empty($article["primary_image_url"])){
+            $articles[$k]["thumbnail_url"] = "https://placeimg.com/50/50/animals";
+            continue;
+        }else if(preg_match('/.gif$/', $article["primary_image_url"])){
+            $articles[$k]["thumbnail_url"] = $article["primary_image_url"];
             continue;
         }
-        $rsz_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
+        $thumbnail_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
         preg_match('/(https?)/', $article["primary_image_url"], $regs);
-        $articles[$k]["rsz_url"] = "{$regs[1]}://rsz.io/{$rsz_url}";
+        $articles[$k]["thumbnail_url"] = "{$regs[1]}://rsz.io/{$thumbnail_url}?width=50&aspect=1";
     }
     return render_template("index", ["articles" => $articles]);
 }

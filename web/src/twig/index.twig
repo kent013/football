@@ -6,11 +6,7 @@
 {% for article in articles %}
 <div class="article">
   <h3><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h3>
-  {% if article.primary_image_url %}
-    <img class="thumbnail" src="{{ article.rsz_url }}?width=50&aspect=1">
-  {% else %}
-    <img class="thumbnail" src="https://placeimg.com/50/50/animals">
-  {% endif %}
+    <img class="thumbnail" src="{{ article.thumbnail_url }}">
   </p>
   <p>
     <span class="published_at">{{ article.published_at }}</span>

@@ -13,7 +13,7 @@
       <p class="mb-0">
         <img class="align-middle" src="http://www.google.com/s2/favicons?domain={{ article.site_url }}">
         <span class="site_title align-middle"><a href="{{ article.site_url}}", target="_blank">{{ article.site_title }}</a></span>
-        <span class="published_at align-middle">{{ article.published_at }}</span>
+        <span class="published_at align-middle">{{ article.published_at|date("m/d/Y H:i", "Asia/Tokyo") }}</span>
       </p>
     </div>
   </div>

@@ -1,11 +1,11 @@
 <?php
-require_once("Inflect.php");
+require_once(__DIR__ . "/../../lib/php/Inflect.php");
 
 function camelize($str) {
     return ucfirst(strtr(ucwords(strtr($str, ['_' => ' '])), [' ' => '']));
 }
 
-$sql = file_get_contents(dirname(__FILE__) . "/../../sql/setup.sql");
+$sql = file_get_contents(__DIR__ . "/../../sql/setup.sql");
 
 preg_match_all('/CREATE TABLE (.+?) \(.+?\);/ms', $sql, $tables);
 $items = [];
@@ -47,6 +47,8 @@ EOS;
                 $column_type = "Integer";
             }else if($type == "TIMESTAMP"){
                 $column_type = "DateTime";
+            }else if($type == "FLOAT"){
+                $column_type = "Float";
             }
             $nullable_bool = $nullable ? "True" : "False";
             if(in_array($property, ["created_at", "updated_at"])){

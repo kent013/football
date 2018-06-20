@@ -94,7 +94,19 @@ class ArticleContents(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     content = Column(String, nullable=False)
     extracted_content = Column(String, nullable=False)
+    primary_image_url = Column(String, nullable=False)
     article_hash = Column(String, nullable=False)
     content_hash = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
+
+class SimilarArticles(DeclarativeBase):
+    """Sqlalchemy model for similar_articles table"""
+    __tablename__ = "similar_articles"
+
+    id = Column(Integer, primary_key=True)
+    article_hash = Column(String, nullable=False)
+    similar_article_hash = Column(String, nullable=False)
+    score = Column(Float, nullable=False)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=datetime.now())

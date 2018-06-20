@@ -29,8 +29,8 @@ CREATE TABLE feeds (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
   `language` VARCHAR(20) NOT NULL,
-  `feed_url` VARCHAR(500) NOT NULL,
-  `site_url` VARCHAR(500) NOT NULL,
+  `feed_url` VARCHAR(1000) NOT NULL,
+  `site_url` VARCHAR(1000) NOT NULL,
   `description` TEXT NULL,
   `site_category_id` INT NOT NULL,
   `site_type_id` INT NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE articles (
   `title` VARCHAR(1000) NOT NULL,
   `summary` TEXT NOT NULL,
   `creator` VARCHAR(255) NOT NULL,
-  `url` VARCHAR(255) NOT NULL,
+  `url` VARCHAR(1000) NOT NULL,
   `hash` VARCHAR(255) NOT NULL,
   `subject` VARCHAR(255) NOT NULL,
   `feed_id` INT NOT NULL,
@@ -77,13 +77,27 @@ CREATE TABLE article_contents (
   `id` INT NOT NULL AUTO_INCREMENT,
   `content` MEDIUMTEXT NOT NULL,
   `extracted_content` MEDIUMTEXT NULL,
+  `primary_image_url` VARCHAR(1000) NULL,
   `article_hash` VARCHAR(255) NOT NULL,
   `content_hash` VARCHAR(255) NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
   `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 
   PRIMARY KEY (`id`),
-  INDEX `article_contents_articl_hash_idx` (`article_hash` ASC)
+  INDEX `article_contents_article_hash_idx` (`article_hash` ASC)
+);
+
+CREATE TABLE similar_articles (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `article_hash` VARCHAR(255) NOT NULL,
+  `similar_article_hash` VARCHAR(255) NOT NULL,
+  `score` FLOAT NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+
+  PRIMARY KEY (`id`),
+  INDEX `article_contents_article_hash_idx` (`article_hash` ASC),
+  INDEX `article_contents_similar_article_hash_idx` (`similar_article_hash` ASC)
 );
 
 CREATE TABLE crawler_jobs (

@@ -65,6 +65,6 @@ for result in results:
 
 session.close()
 
-f = open('models/tokenized.pickle','wb')
+f = open(script_dir + '/../../var/models/tokenized.pickle','wb')
 pickle.dump(trainings, f)
 f.close()

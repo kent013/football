@@ -17,4 +17,4 @@ with open('models/tokenized.pickle', mode='rb') as f:
 
 print('Start training')
 m = Doc2Vec(documents=trainings, dm=1, vector_size=500, window=5, min_count=2, sample=8, alpha=0.1, epochs=55)
-m.save("models/doc2vec.model")
+m.save(script_dir + "/../../var/models/doc2vec.model")

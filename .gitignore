@@ -1,7 +1,8 @@
 __pycache__
 __init__.py
 football/settings.py
-models/*
+var/images/*
+var/models/*
 web/var/twig/*
 web/vendor
 !.gitkeep

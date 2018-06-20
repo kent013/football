@@ -31,9 +31,9 @@ class FootballPipeline(object):
     def process_article(self, item, spider):
         session = self.Session()
         try:
-            result = session.query(Articles).filter(Articles.hash == item['hash']).limit(1).all()
+            result = session.query(Articles).filter(Articles.hash == item['hash']).count()
 
-            if len(result) != 0:
+            if result:
                 spider.mark_job_as_failed_with_session(session, 'hash exists in db', False)
                 session.commit()
                 return
@@ -65,9 +65,9 @@ class FootballPipeline(object):
     def process_article_content(self, item, spider):
         session = self.Session()
         try:
-            result = session.query(ArticleContents).filter(ArticleContents.article_hash == item['article_hash']).limit(1).all()
+            result = session.query(ArticleContents).filter(ArticleContents.article_hash == item['article_hash']).count()
 
-            if len(result) != 0:
+            if result:
                 spider.mark_job_as_failed_with_session(session, 'hash exists in db', False)
                 session.commit()
                 return

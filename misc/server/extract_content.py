@@ -48,7 +48,7 @@ session = session_maker()
 if args.new:
     results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content == None).order_by(ArticleContents.id).all()
 else:
-    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).offset(100).limit(400).all()
+    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 5).order_by(ArticleContents.id).all()
 
 #extractor = ExtractContent({"debug":True, 'threthold': 100})
@@ -105,6 +105,11 @@ try:
                 max = square
 
         article_content.primary_image_url = primary_image_url
+        if article_content.primary_image_url:
+            print("  PRIMARY IMAGE: " + article_content.primary_image_url)
+        else:
+            print("  PRIMARY IMAGE: Not Detected")
+
 
         session.add(article_content)
     session.commit()

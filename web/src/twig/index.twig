@@ -6,12 +6,9 @@
 {% for article in articles %}
 <div class="article">
   <h3><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h3>
-  <p>
-    {% if article.summary %}
-      <span class="summary">{{ article.summary|truncate(50)|e }}</span>
-    {% else %}
-      <span class="summary">{{ article.title|truncate(50)|e }}</span>
-    {% endif %}
+  {% if article.primary_image_url %}
+    <img class="thumbnail" src="{{ article.rsz_url }}?width=50&aspect=1">
+  {% endif %}
   </p>
   <p>
     <span class="published_at">{{ article.published_at }}</span>

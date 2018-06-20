@@ -3,18 +3,36 @@
 {% block title %}The Football Spot{% endblock %}
 
 {% block content %}
-<article>
+<articl class="accordion" id="accordion">
 {% for article in articles %}
-<section class="news">
-  <div class="media">
+<section class="news card">
+  <div class="media card-header" id="heading{{ loop.index }}"data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}" >
     <img class="align-self-center mr-3 rounded news-img" src="{{ article.thumbnail_url }}">
-    <div class="media-body">
+    <div class="align-self-center media-body">
       <h1 class="mt-0"><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h1>
       <p class="mb-0">
         <img class="align-middle" src="http://www.google.com/s2/favicons?domain={{ article.site_url }}">
         <span class="site_title align-middle"><a href="{{ article.site_url}}", target="_blank">{{ article.site_title }}</a></span>
         <span class="published_at align-middle">{{ article.published_at|date("m/d/Y H:i", "Asia/Tokyo") }}</span>
       </p>
+    </div>
+  </div>
+  <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
+    <div class="card-body similar-news">
+      <h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
+{% for similar_article in article.similar_articles %}
+<div class="media">
+  <img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}">
+  <div class="align-self-center media-body">
+    <h3 class="mt-0"><a href="{{ similar_article.url }}" target="_blank">{{ similar_article.title|e }}</a></h3>
+    <p class="mb-0">
+      <img class="align-middle" src="http://www.google.com/s2/favicons?domain={{ similar_article.site_url }}">
+      <span class="site_title align-middle"><a href="{{ similar_article.site_url}}", target="_blank">{{ similar_article.site_title }}</a></span>
+      <span class="published_at align-middle">{{ similar_article.published_at|date("m/d/Y H:i", "Asia/Tokyo") }}</span>
+    </p>
+  </div>
+</div>
+{% endfor %}
     </div>
   </div>
 </section>

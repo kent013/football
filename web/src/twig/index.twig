@@ -20,7 +20,10 @@
   <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
     <div class="card-body similar-news">
       <h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
-{% for similar_article in article.similar_articles %}
+{% if article.similar_articles is empty %}
+<p>解析中です</p>
+{% else %}
+  {% for similar_article in article.similar_articles %}
 <div class="media">
   <img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}">
   <div class="align-self-center media-body">
@@ -32,7 +35,8 @@
     </p>
   </div>
 </div>
-{% endfor %}
+  {% endfor %}
+{% endif %}
     </div>
   </div>
 </section>

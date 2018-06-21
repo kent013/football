@@ -8,7 +8,7 @@ $klein->dispatch();
 
 function action_root() {
     $pdo = _get_connection();
-    $results = $pdo->query("SELECT a.*, f.title AS site_title, f.site_url, f.language, f.site_category_id, f.site_type_id, ac.primary_image_url FROM articles AS a, feeds AS f, article_contents AS ac WHERE f.id= a.feed_id AND ac.article_hash = a.hash ORDER BY a.published_at DESC LIMIT 100");
+    $results = $pdo->query("SELECT a.*, f.title AS site_title, f.site_url, f.language, f.site_category_id, f.site_type_id, ac.primary_image_url FROM articles AS a, feeds AS f, article_contents AS ac WHERE f.id = a.feed_id AND ac.article_hash = a.hash ORDER BY a.published_at DESC LIMIT 100");
     $articles = $results->fetchAll();
     foreach($articles as $k => $article){
         $articles[$k]["thumbnail_url"] = getImageURL($article);

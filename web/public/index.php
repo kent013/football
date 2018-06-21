@@ -63,7 +63,9 @@ function getImageURL($article){
     }else if(preg_match('/.gif$/', $article["primary_image_url"])){
         return $article["primary_image_url"];
     }
-    return "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?url={$article["primary_image_url"]}&container=focus&resize_w=50&rewriteMime=image/*";
+    $thumbnail_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
+    $thumbnail_url = urlencode($thumbnail_url);
+    return "https://images.weserv.nl/?url={$thumbnail_url}&container=focus&w=50&h=50&t=square";
 }
 
 function getSettings($key = null){

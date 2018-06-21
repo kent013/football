@@ -5,4 +5,5 @@ var/images/*
 var/models/*
 web/var/twig/*
 web/vendor
+web/src/php/settings.php
 !.gitkeep

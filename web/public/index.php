@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/../vendor/autoload.php');
 require_once(__DIR__ . "/../../lib/php/util.php");
+require_once(__DIR__ . "/../src/php/settings.php");
 
 $klein = new \Klein\Klein();
 $klein->respond('GET', '/', action_root);
@@ -37,7 +38,8 @@ function render_template($template, $vars = []){
     ));
     $twig->addExtension(new Twig_Extensions_Extension_Text());
     $template = $twig->load("$template.twig");
-    return $template->render($vars);
+    global $football_web_settings;
+    return $template->render($vars + $football_web_settings);
 }
 
 function getImageURL($article){

@@ -57,6 +57,7 @@ section.news h1 {
 }
 section.news div.similar-news {
   padding-top: 0.5rem;
+  padding-right: 0rem;
 }
 
 section.news div.similar-news h2,

@@ -4,6 +4,7 @@ require_once(__DIR__ . "/../../lib/php/util.php");
 
 $klein = new \Klein\Klein();
 $klein->respond('GET', '/', action_root);
+$klein->respond('GET', '/about', action_about);
 $klein->dispatch();
 
 function action_root() {
@@ -23,7 +24,11 @@ function action_root() {
     return render_template("index", ["articles" => $articles]);
 }
 
-function render_template($template, $vars){
+function action_about() {
+    return render_template("about");
+}
+
+function render_template($template, $vars = []){
     $webdir = __DIR__ . "/../";
     $loader = new Twig_Loader_Filesystem("$webdir/src/twig");
     $twig = new Twig_Environment($loader, array(

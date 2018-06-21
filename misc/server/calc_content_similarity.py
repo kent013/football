@@ -49,10 +49,10 @@ print('Start calculation')
 for result in results:
     try:
         article_content, article, feed = result
-        print('  %s %s' % (article.url, article.title))
         if not args.renew and session.query(SimilarArticles).filter(SimilarArticles.article_hash == article.hash).count():
             continue
 
+        print('  %s %s' % (article.url, article.title))
         similar_articles = m.docvecs.most_similar(article.hash)
 
         for similar_article in similar_articles:

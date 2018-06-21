@@ -88,9 +88,15 @@ class AllSpider(CommonSpider):
             session.close()
 
     def insert_feed_job(self, session, job_type, feed, offset):
+        job_count = session.query(CrawlerJobs).filter(CrawlerJobs.type == job_type, CrawlerJobs.feed_id == feed.id, CrawlerJobs.started_at == None).count()
+
+        if job_count:
+            pprint('  already exists')
+            return
+
         job = self.clone_job()
         job.type = job_type
-        job.priority = self.crawler_job.priority + 10
+        job.priority = 100
         job.target = feed.feed_url
         job.feed_id = feed.id
         encoder = ScrapyJSONEncoder()
@@ -130,7 +136,7 @@ class AllSpider(CommonSpider):
 
                 article = FootballArticleItem()
                 article['title'] = entry.title
-                article['summary'] = entry.summary
+                article['summary'] = entry.summary if 'summary' in entry else ""
                 article['creator'] = entry.author if 'author' in entry else ""
 
                 article['url'] = entry.link

@@ -31,7 +31,7 @@ parser.add_argument("-n","--renew",
 )
 args = parser.parse_args()
 
-m = Doc2Vec.load('models/doc2vec.model')
+m = Doc2Vec.load(script_dir + '/../../var/models/doc2vec.model')
 
 engine=db_connect()
 

@@ -35,7 +35,7 @@ parser = argparse.ArgumentParser(
   add_help = True,
 )
 
-parser.add_argument("-n","--new",
+parser.add_argument("-n","--renew",
   action = "store_true"
 )
 args = parser.parse_args()
@@ -45,10 +45,10 @@ dc = diskcache.Cache(script_dir + '/../../var/images')
 session_maker = sessionmaker(bind=db_connect())
 session = session_maker()
 
-if args.new:
-    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content == None).order_by(ArticleContents.id).all()
-else:
+if args.renew:
     results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
+else:
+    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content == None).order_by(ArticleContents.id).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 5).order_by(ArticleContents.id).all()
 
 #extractor = ExtractContent({"debug":True, 'threthold': 100})

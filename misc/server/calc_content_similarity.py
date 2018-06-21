@@ -43,7 +43,7 @@ if args.renew:
 session_maker = sessionmaker(bind=engine)
 session = session_maker()
 
-results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
+results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
 
 print('Start calculation')
 for result in results:

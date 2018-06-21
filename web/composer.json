@@ -2,6 +2,7 @@
     "require": {
         "klein/klein": "^2.1",
         "twig/twig": "^2.0",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "jasongrimes/paginator": "~1.0"
     }
 }

@@ -42,4 +42,34 @@
 </section>
 {% endfor %}
 </article>
+<nav aria-label="Page navigation" class="footer">
+{% if paginator.numPages > 1 %}
+<ul class="pagination justify-content-center pagination-sm">
+  {% if paginator.prevUrl %}
+  <li class="page-item">
+    <a class="page-link" aria-label="Previous" href="{{ paginator.prevUrl }}">
+      <span aria-hidden="true">&laquo;</span>
+      <span class="sr-only">Previous</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {% for page in paginator.pages %}
+  {% if page.url %}
+  <li class="page-item {{ page.isCurrent ? 'active' : '' }}"><a class="page-link"  href="{{ page.url }}">{{ page.num }}</a></li>
+  {% endif %}
+  {% endfor %}
+
+  {% if paginator.nextUrl %}
+
+  <li class="page-item">
+    <a class="page-link" href="{{ paginator.nextUrl }}" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+      <span class="sr-only">Next</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
+</nav>
 {% endblock %}

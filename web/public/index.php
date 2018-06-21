@@ -3,14 +3,26 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 require_once(__DIR__ . "/../../lib/php/util.php");
 require_once(__DIR__ . "/../src/php/settings.php");
 
+use JasonGrimes\Paginator;
+
 $klein = new \Klein\Klein();
 $klein->respond('GET', '/', action_root);
+$klein->respond('GET', '/[i:page]?', action_root);
 $klein->respond('GET', '/about', action_about);
 $klein->dispatch();
 
-function action_root() {
+function action_root($request) {
     $pdo = _get_connection();
-    $results = $pdo->query("SELECT a.*, f.title AS site_title, f.site_url, f.language, f.site_category_id, f.site_type_id, ac.primary_image_url FROM articles AS a, feeds AS f, article_contents AS ac WHERE f.id = a.feed_id AND ac.article_hash = a.hash ORDER BY a.published_at DESC LIMIT 100");
+
+    $page = $request->param('page', 1);
+
+    $result = $pdo->query("SELECT count(a.id) FROM articles AS a, article_contents AS ac WHERE ac.article_hash = a.hash");
+    $result = $result->fetch();
+    $itemsPerPage = getSettings("items_per_page");
+    $totalItems = $result[0] - $itemsPerPage;
+    $currentPage = $page;
+
+    $results = $pdo->query("SELECT a.*, f.title AS site_title, f.site_url, f.language, f.site_category_id, f.site_type_id, ac.primary_image_url FROM articles AS a, feeds AS f, article_contents AS ac WHERE f.id = a.feed_id AND ac.article_hash = a.hash ORDER BY a.published_at DESC LIMIT " . $itemsPerPage . " OFFSET " . ($currentPage * $itemsPerPage));
     $articles = $results->fetchAll();
     foreach($articles as $k => $article){
         $articles[$k]["thumbnail_url"] = getImageURL($article);
@@ -22,7 +34,11 @@ function action_root() {
         }
         $articles[$k]["similar_articles"] = $similar_articles;
     }
-    return render_template("index", ["articles" => $articles]);
+    $urlPattern = '/(:num)';
+
+    $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+    $paginator->setMaxPagesToShow(8);
+    return render_template("index", ["articles" => $articles, "paginator" => $paginator]);
 }
 
 function action_about() {
@@ -38,8 +54,7 @@ function render_template($template, $vars = []){
     ));
     $twig->addExtension(new Twig_Extensions_Extension_Text());
     $template = $twig->load("$template.twig");
-    global $football_web_settings;
-    return $template->render($vars + $football_web_settings);
+    return $template->render($vars + getSettings());
 }
 
 function getImageURL($article){
@@ -51,4 +66,12 @@ function getImageURL($article){
     $thumbnail_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
     preg_match('/(https?)/', $article["primary_image_url"], $regs);
     return "{$regs[1]}://rsz.io/{$thumbnail_url}?width=50&aspect=1";
+}
+
+function getSettings($key = null){
+    global $football_web_settings;
+    if(is_null($key)){
+        return $football_web_settings;
+    }
+    return $football_web_settings[$key];
 }

@@ -73,3 +73,6 @@ section.news div.similar-news h2{
   margin-bottom: 0;
   padding-bottom: 0.2rem;
 }
+nav.footer ul.pagination{
+  margin-top: 1rem;
+}

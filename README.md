@@ -1,6 +1,23 @@
 # README
+## TL;DR
+This is experimental system to learn about current Natural Language (especially Japanese) libraries.
 
-## Instance Configuration
+This repository contains following scripts.
+1. Scrape football articles from RSSs with Scrapy (python)
+2. Extract contents (main body text and primary image from HTML)
+3. Tokenize (using Janome for Japanese, NLTK for English)
+4. Calculate similarity (using gensim Doc2Vec)
+5. Website (using PHP)
+
+The site deployed is https://the-football-spot.com/
+
+## Instance Configuration
+
+### Change Hostname
+
+```bash
+sudo hostname [instance alias in servers.json]
+```
 
 ### Install Linux Packages
 ```bash

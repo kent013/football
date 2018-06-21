@@ -6,6 +6,12 @@ $pdo = _get_connection();
 
 $action = _getArg('action', null);
 if($action == 'initial'){
+    $result = $pdo->query("SELECT count(id) FROM crawler_jobs AS c WHERE c.started_at IS NULL AND c.type = 'initial'");
+    $result = $result->fetch();
+    var_dump($result);
+    if((int)$result[0] > 0){
+        return;
+    }
     $pdo->query("INSERT INTO crawler_jobs (type, priority, created_at, updated_at) values ('initial', 0, now(), now());");
 }
 

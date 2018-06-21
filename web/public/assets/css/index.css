@@ -81,3 +81,6 @@ section.news div.similar-news h2{
 nav.footer ul.pagination{
   margin-top: 1rem;
 }
+section.news a:visited {
+  color: #6200b2 !important;
+}

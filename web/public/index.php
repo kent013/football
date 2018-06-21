@@ -32,7 +32,7 @@ function action_root($request) {
         foreach($similar_articles as $i => $similar_article){
             $similar_articles[$i]["thumbnail_url"] = getImageURL($similar_article);
         }
-        //$articles[$k]["similar_articles"] = $similar_articles;
+        $articles[$k]["similar_articles"] = $similar_articles;
     }
     $urlPattern = '/(:num)';
 

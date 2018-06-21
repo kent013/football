@@ -19,10 +19,10 @@
   </div>
   <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
     <div class="card-body similar-news">
-      <h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
 {% if article.similar_articles is empty %}
-<p>解析中です</p>
+<span class="badge badge-pill badge-secondary"><i class="fa fa-spinner fa-spin fa-fw"></i> 関連記事は解析中です</span>
 {% else %}
+<h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
   {% for similar_article in article.similar_articles %}
 <div class="media">
   <img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}">
@@ -44,7 +44,7 @@
 </article>
 <nav aria-label="Page navigation" class="footer">
 {% if paginator.numPages > 1 %}
-<ul class="pagination justify-content-center pagination-sm">
+<ul class="pagination justify-content-center">
   {% if paginator.prevUrl %}
   <li class="page-item">
     <a class="page-link" aria-label="Previous" href="{{ paginator.prevUrl }}">

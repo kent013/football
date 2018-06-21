@@ -65,7 +65,7 @@ for result in results:
         article_content, article, feed = result
         if article.hash in trainings:
             continue
-        if not article_content.content:
+        if not article_content.extracted_content:
             continue
         print('  ' + article.url)
         content = article_content.extracted_content

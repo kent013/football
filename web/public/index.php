@@ -61,11 +61,11 @@ function getImageURL($article){
     if(empty($article["primary_image_url"])){
         return "https://placeimg.com/50/50/animals";
     }else if(preg_match('/.gif$/', $article["primary_image_url"])){
-        return $article["primary_image_url"];
+        return "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?url=" . urlencode($article["primary_image_url"]) ."&container=focus";
     }
     $thumbnail_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
     $thumbnail_url = urlencode($thumbnail_url);
-    return "https://images.weserv.nl/?url={$thumbnail_url}&container=focus&w=50&h=50&t=square";
+    return "https://images.weserv.nl/?url={$thumbnail_url}&w=50&h=50&t=square";
 }
 
 function getSettings($key = null){

@@ -63,9 +63,7 @@ function getImageURL($article){
     }else if(preg_match('/.gif$/', $article["primary_image_url"])){
         return $article["primary_image_url"];
     }
-    $thumbnail_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
-    preg_match('/(https?)/', $article["primary_image_url"], $regs);
-    return "{$regs[1]}://rsz.io/{$thumbnail_url}?width=50&aspect=1";
+    return "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?url={$article["primary_image_url"]}&container=focus&resize_w=50&resize_h=50&rewriteMime=image/*";
 }
 
 function getSettings($key = null){

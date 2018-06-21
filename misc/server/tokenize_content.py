@@ -26,28 +26,45 @@ from nltk.tokenize import word_tokenize
 from filters import FootballCompoundNounFilter, FootballNounFilter
 
 import pickle
+import argparse
 
 session_maker = sessionmaker(bind=db_connect())
 session = session_maker()
 
-results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
+parser = argparse.ArgumentParser(
+  prog="extract_content",
+  usage="",
+  description="extract content from article",
+  epilog = "",
+  add_help = True,
+)
+
+parser.add_argument("-n","--renew",
+  action = "store_true"
+)
+args = parser.parse_args()
+
+results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).limit(20).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 45).order_by(ArticleContents.id).all()
 
-char_filters = [UnicodeNormalizeCharFilter(),
-RegexReplaceCharFilter('&[^&]+;', '')
-]
+char_filters = [UnicodeNormalizeCharFilter(), RegexReplaceCharFilter('&[^&]+;', '')]
 tokenizer = Tokenizer(mmap=True)
-#token_filters = [POSStopFilter(['接続詞', '記号', '助詞', '助動詞'])]
-#token_filters = [POSStopFilter(['接続詞', '記号', '助詞', '助動詞']), TokenCountFilter(att='surface')]
-#token_filters = []
 token_filters = [FootballCompoundNounFilter(), FootballNounFilter(), POSKeepFilter('名詞')]
 analyzer = Analyzer(char_filters, tokenizer, token_filters)
 
 print('Start tokenize')
-trainings = []
+
+trainings = {}
+model_cache_path = script_dir + '/../../var/models/tokenized.pickle'
+if not args.renew and os.path.isfile(model_cache_path):
+    with open(model_cache_path, mode='rb') as f:
+        trainings = pickle.load(f)
+
 for result in results:
     try:
         article_content, article, feed = result
+        if article.hash in trainings:
+            continue
         print('  ' + article.url)
         content = article_content.extracted_content
         words = []
@@ -59,12 +76,12 @@ for result in results:
 
         elif feed.language == "en":
             words = word_tokenize(content)
-        trainings.append(TaggedDocument(words, tags=[article.hash]))
+        trainings[article.hash] = TaggedDocument(words, tags=[article.hash])
     except Exception as e:
         print(e)
 
 session.close()
 
-f = open(script_dir + '/../../var/models/tokenized.pickle','wb')
+f = open(model_cache_path, 'wb')
 pickle.dump(trainings, f)
 f.close()

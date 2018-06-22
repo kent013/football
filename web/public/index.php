@@ -59,7 +59,7 @@ function render_template($template, $vars = []){
 
 function getImageURL($article){
     if(empty($article["primary_image_url"])){
-        return "https://placeimg.com/50/50/animals";
+        return "https://placeimg.com/50/50/animals?rand = " . rand(0, 100);
     }else if(preg_match('/.gif$/', $article["primary_image_url"])){
         return "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?url=" . urlencode($article["primary_image_url"]) ."&container=focus";
     }

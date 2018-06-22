@@ -29,6 +29,9 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-n","--renew",
   action = "store_true"
 )
+parser.add_argument("-d","--dryrun",
+  action = "store_true"
+)
 args = parser.parse_args()
 
 m = Doc2Vec.load(script_dir + '/../../var/models/doc2vec.model')
@@ -42,6 +45,7 @@ if args.renew:
 
 session_maker = sessionmaker(bind=engine)
 session = session_maker()
+session.expire_on_commit = False
 
 results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
 
@@ -49,19 +53,22 @@ print('Start calculation')
 for result in results:
     try:
         article_content, article, feed = result
-        if not args.renew and session.query(SimilarArticles).filter(SimilarArticles.article_hash == article.hash).count():
+        if not args.renew and not args.dryrun and session.query(SimilarArticles).filter(SimilarArticles.article_hash == article.hash).count():
             continue
 
         print('  %s %s' % (article.url, article.title))
-        similar_articles = m.docvecs.most_similar(article.hash)
+        similar_articles = m.docvecs.most_similar(article.hash, topn=20)
 
         for similar_article in similar_articles:
             model = SimilarArticles()
             model.article_hash = article.hash
             model.similar_article_hash = similar_article[0]
             model.score =  similar_article[1]
-            session.add(model)
-        session.commit()
+            if not args.dryrun:
+                session.add(model)
+
+        if not args.dryrun:
+            session.commit()
     except Exception as e:
         print(e)
         session.rollback()

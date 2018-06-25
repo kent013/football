@@ -6,4 +6,10 @@ $(document).ready(function(){
       scrollTop: $(element).offset().top - $('nav.navbar').outerHeight()
     }, 500);
   });
+  $("#accordion .card-header h1 a").on("click", function (e) {
+    var element = $($(this).parents('.card-header').data('target'));
+    if(element.is(":visible")){
+      e.stopPropagation();
+    }
+  });
 });

@@ -25,7 +25,7 @@
 <h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
   {% for similar_article in article.similar_articles %}
 <div class="media">
-  <img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}">
+  <a href="{{ similar_article.url }}" target="_blank"><img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}"></a>
   <div class="align-self-center media-body">
     <h3 class="mt-0"><a href="{{ similar_article.url }}" target="_blank">{{ similar_article.title|e }}</a></h3>
     <p class="mb-0">

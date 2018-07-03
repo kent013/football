@@ -3,13 +3,13 @@
 {% block title %}The Football Spot{% endblock %}
 
 {% block content %}
-<article class="articles" role=list>
+<article class="articles">
 <section class="news card">
   <div class="media card-header" >
     {% include 'share/item.twig' with article %}
   </div>
   <div>
-    <div class="card-body similar-news" role=list>
+    <div class="card-body similar-news">
 {% if similar_articles is empty %}
 <span class="badge badge-pill badge-secondary"><i class="fa fa-spinner fa-spin fa-fw"></i> 関連記事は解析中です</span>
 {% else %}

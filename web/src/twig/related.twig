@@ -3,10 +3,9 @@
 {% block title %}The Football Spot{% endblock %}
 
 {% block content %}
-<article class="articles accordion" id="accordion">
-{% for article in articles %}
+<article class="articles">
 <section class="news card">
-  <div class="media card-header" id="heading{{ loop.index }}" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}" >
+  <div class="media card-header" >
     <img class="align-self-center mr-3 rounded news-img" src="{{ article.thumbnail_url }}">
     <div class="align-self-center media-body">
       <h1 class="mt-0"><a href="{{ article.url }}" target="_blank">{{ article.title|e }}</a></h1>
@@ -17,13 +16,13 @@
       </p>
     </div>
   </div>
-  <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
+  <div>
     <div class="card-body similar-news">
-{% if article.similar_articles is empty %}
+{% if similar_articles is empty %}
 <span class="badge badge-pill badge-secondary"><i class="fa fa-spinner fa-spin fa-fw"></i> 関連記事は解析中です</span>
 {% else %}
 <h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
-  {% for similar_article in article.similar_articles %}
+  {% for similar_article in similar_articles %}
 <div class="media">
   <a href="{{ similar_article.url }}" target="_blank"><img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}"></a>
   <div class="align-self-center media-body">
@@ -37,42 +36,11 @@
 </div>
   {% endfor %}
 {% endif %}
-      <div class="media">
-      <a class="btn btn-secondary btn-lg btn-block" href="/related/{{ article.hash }}" role="button">関連記事をもっと見る</a>
-      </div>
+<div class="media">
+<a class="btn btn-secondary btn-lg btn-block" href="#" onclick="javascript:window.history.back(-1);return false;" role="button">もどる</a>
+</div>
     </div>
   </div>
 </section>
-{% endfor %}
 </article>
-<nav aria-label="Page navigation" class="footer">
-{% if paginator.numPages > 1 %}
-<ul class="pagination justify-content-center">
-  {% if paginator.prevUrl %}
-  <li class="page-item">
-    <a class="page-link" aria-label="Previous" href="{{ paginator.prevUrl }}">
-      <span aria-hidden="true">&laquo;</span>
-      <span class="sr-only">Previous</span>
-    </a>
-  </li>
-  {% endif %}
-
-  {% for page in paginator.pages %}
-  {% if page.url %}
-  <li class="page-item {{ page.isCurrent ? 'active' : '' }}"><a class="page-link"  href="{{ page.url }}">{{ page.num }}</a></li>
-  {% endif %}
-  {% endfor %}
-
-  {% if paginator.nextUrl %}
-
-  <li class="page-item">
-    <a class="page-link" href="{{ paginator.nextUrl }}" aria-label="Next">
-      <span aria-hidden="true">&raquo;</span>
-      <span class="sr-only">Next</span>
-    </a>
-  </li>
-  {% endif %}
-</ul>
-{% endif %}
-</nav>
 {% endblock %}

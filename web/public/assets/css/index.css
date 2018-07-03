@@ -58,7 +58,7 @@ section.news img.favicon {
 .card .card-header a[data-toggle="collapse"]:active,
 .card .card-header a[data-toggle="collapse"]:hover,
 .card .card-header a[data-toggle="collapse"]:focus {
-  text-decoration: none; //リンクテキストの下線を消す
+  text-decoration: none;
 }
 section.news div.similar-news {
   padding-top: 0.5rem;
@@ -81,6 +81,6 @@ section.news div.similar-news h2{
 nav.footer ul.pagination{
   margin-top: 1rem;
 }
-section.news a:visited {
+section.news a:visited:not(.btn) {
   color: #6200b2 !important;
 }

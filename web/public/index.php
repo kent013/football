@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../vendor/autoload.php');
-require_once(__DIR__ . "/../../lib/php/util.php");
-require_once(__DIR__ . "/../src/php/settings.php");
+require_once(__DIR__ . "/../src/php/web_util.php");
 
 use JasonGrimes\Paginator;
 
@@ -9,69 +8,17 @@ $klein = new \Klein\Klein();
 $klein->respond('GET', '/', action_root);
 $klein->respond('GET', '/[i:page]?', action_root);
 $klein->respond('GET', '/about', action_about);
+$klein->respond('GET', '/related/[*:hash]', action_related);
 $klein->dispatch();
 
-function action_root($request) {
-    $pdo = _get_connection();
-
-    $page = $request->param('page', 1);
-
-    $result = $pdo->query("SELECT count(a.id) FROM articles AS a, article_contents AS ac WHERE ac.article_hash = a.hash");
-    $result = $result->fetch();
-    $itemsPerPage = getSettings("items_per_page");
-    $totalItems = $result[0] - $itemsPerPage;
-    $currentPage = $page;
-
-    $results = $pdo->query("SELECT a.*, f.title AS site_title, f.site_url, f.language, f.site_category_id, f.site_type_id, ac.primary_image_url FROM articles AS a, feeds AS f, article_contents AS ac WHERE f.id = a.feed_id AND ac.article_hash = a.hash ORDER BY a.published_at DESC LIMIT " . $itemsPerPage . " OFFSET " . ($currentPage * $itemsPerPage));
-    $articles = $results->fetchAll();
-    foreach($articles as $k => $article){
-        $articles[$k]["thumbnail_url"] = getImageURL($article);
-
-        $s_results = $pdo->query("SELECT a.*, f.title AS site_title, f.site_url, f.language, f.site_category_id, f.site_type_id, ac.primary_image_url FROM similar_articles AS sa, articles AS a, feeds AS f, article_contents AS ac WHERE sa.article_hash = '{$article['hash']}' AND sa.similar_article_hash = a.hash AND f.id = a.feed_id AND ac.article_hash = a.hash ORDER BY a.published_at DESC LIMIT 10");
-        $similar_articles = $s_results->fetchAll();
-        foreach($similar_articles as $i => $similar_article){
-            $similar_articles[$i]["thumbnail_url"] = getImageURL($similar_article);
-        }
-        $articles[$k]["similar_articles"] = $similar_articles;
-    }
-    $urlPattern = '/(:num)';
-
-    $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-    $paginator->setMaxPagesToShow(6);
-    return render_template("index", ["articles" => $articles, "paginator" => $paginator]);
+function action_root($request, $response, $service) {
+    return call_action_worker("root", $request, $response, $service);
 }
 
-function action_about() {
-    return render_template("about");
+function action_related($request, $response, $service){
+    return call_action_worker("related", $request, $response, $service);
 }
 
-function render_template($template, $vars = []){
-    $webdir = __DIR__ . "/../";
-    $loader = new Twig_Loader_Filesystem("$webdir/src/twig");
-    $twig = new Twig_Environment($loader, array(
-        'cache' => "$webdir/var/twig",
-        'debug' => true
-    ));
-    $twig->addExtension(new Twig_Extensions_Extension_Text());
-    $template = $twig->load("$template.twig");
-    return $template->render($vars + getSettings());
-}
-
-function getImageURL($article){
-    if(empty($article["primary_image_url"])){
-        return "https://placeimg.com/50/50/animals?rand = " . rand(0, 100);
-    }else if(preg_match('/.gif$/', $article["primary_image_url"])){
-        return "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?url=" . urlencode($article["primary_image_url"]) ."&container=focus";
-    }
-    $thumbnail_url = preg_replace('/https?:\/\//', '', $article["primary_image_url"]);
-    $thumbnail_url = urlencode($thumbnail_url);
-    return "https://images.weserv.nl/?url={$thumbnail_url}&w=50&h=50&t=square";
-}
-
-function getSettings($key = null){
-    global $football_web_settings;
-    if(is_null($key)){
-        return $football_web_settings;
-    }
-    return $football_web_settings[$key];
+function action_about($request, $response, $service) {
+    return call_action_worker("about", $request, $response, $service);
 }

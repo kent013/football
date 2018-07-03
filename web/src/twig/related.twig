@@ -13,7 +13,7 @@
 {% if similar_articles is empty %}
 <span class="badge badge-pill badge-secondary"><i class="fa fa-spinner fa-spin fa-fw"></i> 関連記事は解析中です</span>
 {% else %}
-<h2><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h2>
+<h3><i class="far fa-futbol"></i> 関連記事 <i class="far fa-futbol"></i></h3>
   {% for similar_article in similar_articles %}
     {% include 'share/similar_item.twig' with similar_article %}
   {% endfor %}

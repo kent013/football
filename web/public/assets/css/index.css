@@ -2,13 +2,13 @@ body {
   padding-top: 5rem;
 }
 
-section.news h1 {
-  font-size: 0.8rem;
-}
 section.news h2 {
   font-size: 0.8rem;
 }
 section.news h3 {
+  font-size: 0.8rem;
+}
+section.news h4 {
   font-size: 0.7rem;
 }
 section.news img.main_image {

@@ -60,20 +60,23 @@ try:
         text = ''
         content = article_content.content
         pprint(article.url)
-        if feed.language == 'ja':
-            extractor.analyse(content)
-            text, title = extractor.as_text()
-            text = re.sub('名前：[^\s]+', '', text)
-            text = re.sub('ID:[^\s]+', '', text)
-            text = re.sub('https?:[^\s]+', '', text)
-            text = re.sub('[0-9]+ +[0-9]+:[0-9]+:[0-9]+\.[0-9]+', '', text)
-            text = re.sub('[<＜>＞]+\s?[0-9\s]+', '', text)
-            text = re.sub('引用元：', '', text)
-            text = re.sub('[0-9]+\s+：[0-9]+\/[0-9]+\/[0-9]+.+?[0-9]+:[0-9]+:[0-9]+\.[0-9]+', '', text)
-            text = re.sub('<[^>]+>', '', text)
-        else:
-            text = extract_content(content)
-
+        try:
+            if feed.language == 'ja':
+                extractor.analyse(content)
+                text, title = extractor.as_text()
+                text = re.sub('名前：[^\s]+', '', text)
+                text = re.sub('ID:[^\s]+', '', text)
+                text = re.sub('https?:[^\s]+', '', text)
+                text = re.sub('[0-9]+ +[0-9]+:[0-9]+:[0-9]+\.[0-9]+', '', text)
+                text = re.sub('[<＜>＞]+\s?[0-9\s]+', '', text)
+                text = re.sub('引用元：', '', text)
+                text = re.sub('[0-9]+\s+：[0-9]+\/[0-9]+\/[0-9]+.+?[0-9]+:[0-9]+:[0-9]+\.[0-9]+', '', text)
+                text = re.sub('<[^>]+>', '', text)
+            else:
+                text = extract_content(content)
+        except Exception as e:
+            print(e)
+   
         if not text:
             text = article.summary
         article_content.extracted_content = article.title.strip() + " " + text.strip()

@@ -1,7 +1,7 @@
 {% if accordion %}
-<div class="media card-header" id="heading{{ loop.index }}" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+<div class="media card-header" id="heading{{ loop.index }}" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}" role="listitem">
 {% else %}
-<div class="media card-header">
+<div class="media card-header" role="listitem">
 {% endif %}
   <img class="align-self-center mr-3 rounded news-img" src="{{ article.thumbnail_url }}" alt="{{ similar_article.title|e }}の代表サムネイル">
   <div class="align-self-center media-body">

@@ -3,12 +3,12 @@
 {% block title %}The Football Spot{% endblock %}
 
 {% block content %}
-<article class="articles accordion" id="accordion">
+<article class="articles accordion" id="accordion" role=list>
 {% for article in articles %}
 <section class="news card">
   {% include 'share/item.twig' with { 'article':article, 'accordion':true } %}
   <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
-    <div class="card-body similar-news">
+    <div class="card-body similar-news" role=list>
 {% if article.similar_articles is empty %}
 <span class="badge badge-pill badge-secondary"><i class="fa fa-spinner fa-spin fa-fw"></i> 関連記事は解析中です</span>
 {% else %}

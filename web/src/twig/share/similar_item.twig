@@ -1,0 +1,11 @@
+<div class="media">
+  <a href="{{ similar_article.url }}" target="_blank"><img class="align-self-center mr-3 rounded news-img" src="{{ similar_article.thumbnail_url }}" alt="{{ similar_article.title|e }}の代表サムネイル"></a>
+  <div class="align-self-center media-body">
+    <h3 class="mt-0"><a href="{{ similar_article.url }}" target="_blank">{{ similar_article.title|e }}</a></h3>
+    <p class="mb-0">
+      <img class="align-middle rounded favicon" src="https://www.google.com/s2/favicons?domain={{ similar_article.site_url }}" alt="{{ similar_article.site_title|e }}のfavicon">
+      <span class="site_title align-middle"><a href="{{ similar_article.site_url}}" target="_blank">{{ similar_article.site_title|e }}</a></span>
+      <span class="published_at align-middle">{{ similar_article.published_at|date("m/d/Y H:i", "Asia/Tokyo") }}</span>
+    </p>
+  </div>
+</div>

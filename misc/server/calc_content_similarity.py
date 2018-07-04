@@ -41,36 +41,40 @@ engine=db_connect()
 if args.renew:
     connection = engine.connect()
     result = connection.execute("TRUNCATE similar_articles")
+    result = connection.execute("UPDATE article_contents SET similar_article_calculated = 0")
     connection.close()
 
 session_maker = sessionmaker(bind=engine)
 session = session_maker()
 session.expire_on_commit = False
 
-results = session.query(Articles.hash).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
+results = session.query(Articles.hash).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.similar_article_calculated == False).order_by(ArticleContents.id).all()
 
 print('Start calculation')
-for result in results:
-    try:
-        if not args.dryrun and session.query(SimilarArticles).filter(SimilarArticles.article_hash == result.hash).count():
-            continue
+try:
+    for result in results:
+        try:
+            print('  %s' % (result.hash))
+            similar_articles = m.docvecs.most_similar(result.hash, topn=20)
 
-        print('  %s' % (result.hash))
-        similar_articles = m.docvecs.most_similar(result.hash, topn=20)
-
-        for similar_article in similar_articles:
-            model = SimilarArticles()
-            model.article_hash = result.hash
-            model.similar_article_hash = similar_article[0]
-            model.score =  similar_article[1]
+            for similar_article in similar_articles:
+                model = SimilarArticles()
+                model.article_hash = result.hash
+                model.similar_article_hash = similar_article[0]
+                model.score =  similar_article[1]
+                if not args.dryrun:
+                    session.add(model)
             if not args.dryrun:
-                session.add(model)
+                session.query(ArticleContents).filter(ArticleContents.article_hash == result.hash).update({"similar_article_calculated": True})
+        except Exception as e:
+            print(e)
+    if not args.dryrun:
+        session.commit()
+except Exception as e:
+    print(e)
+    session.rollback()
+    raise
+finally:
+    session.close()
 
-        if not args.dryrun:
-            session.commit()
-    except Exception as e:
-        print(e)
-        session.rollback()
-        raise
-    finally:
-        session.close()
+print('Done')

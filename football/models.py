@@ -97,6 +97,7 @@ class ArticleContents(DeclarativeBase):
     primary_image_url = Column(String, nullable=False)
     article_hash = Column(String, nullable=False)
     content_hash = Column(String, nullable=False)
+    similar_article_calculated = Column(Boolean, nullable=False)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=datetime.now())
 

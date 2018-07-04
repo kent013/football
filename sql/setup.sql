@@ -80,11 +80,13 @@ CREATE TABLE article_contents (
   `primary_image_url` VARCHAR(1000) NULL,
   `article_hash` VARCHAR(255) NOT NULL,
   `content_hash` VARCHAR(255) NOT NULL,
+  `similar_article_calculated` BOOLEAN NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
   `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 
   PRIMARY KEY (`id`),
-  INDEX `article_contents_article_hash_idx` (`article_hash` ASC)
+  INDEX `article_contents_article_hash_idx` (`article_hash` ASC),
+  INDEX `article_contents_extracted_contents_idx` (`extracted_content`(1) ASC)
 );
 
 CREATE TABLE similar_articles (

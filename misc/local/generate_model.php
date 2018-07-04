@@ -49,6 +49,8 @@ EOS;
                 $column_type = "DateTime";
             }else if($type == "FLOAT"){
                 $column_type = "Float";
+            }else if($type == "BOOLEAN"){
+                $column_type = "Boolean";
             }
             $nullable_bool = $nullable ? "True" : "False";
             if(in_array($property, ["created_at", "updated_at"])){

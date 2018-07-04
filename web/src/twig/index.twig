@@ -18,9 +18,11 @@
     {% include 'share/similar_item.twig' with similar_article %}
   {% endfor %}
 {% endif %}
+{% if article.similar_articles is not empty %}
       <div class="media">
       <a class="btn btn-secondary btn-block" href="/related/{{ article.hash }}" role="button">関連記事をもっと見る</a>
       </div>
+{% endif %}
     </div>
   </div>
 </section>

@@ -1,26 +1,23 @@
 #!/bin/bash -l
 PID_PATH=/var/log/crawler/pid$1
-if [ `ps ax | grep python | grep -v grep | wc | awk '{print $1}'` -ge 5 ]; then
-  ps ax | egrep "python|football" | grep -v grep | awk '{print $1}' | xargs kill
-  rm $PID_PATH
+PYTHON_PATH=/home/ec2-user/.pyenv/versions/3.5.4/bin
+SCRIPT_PATH=/home/ec2-user/football/misc/server
+
+if [ -e $PID_PATH ]; then
+  echo "process is running."
+  cat $PID_PATH
   exit
 fi
-cd /var/repos/football/
 
-INTERVAL=60
-START=$SECONDS
-TIME_INTERVAL=`expr $INTERVAL / $CRAWLER_SEPARATION_COUNT`
-while [ `expr $SECONDS - $START` -lt 60 ];
+while true
 do
-  sleep ` awk 'BEGIN{srand();print rand() * ('$TIME_INTERVAL'-'$TIME_INTERVAL'/2) + '$TIME_INTERVAL'/2}'`
   if [ ! -e $PID_PATH ]; then
     touch $PID_PATH
     echo $$ > $PID_PATH
-    /home/ec2-user/.pyenv/versions/3.5.4/bin/python \
-      /home/ec2-user/.pyenv/versions/3.5.4/bin/scrapy \
-        crawl all \
-          -a pid_path=$PID_PATH \
-          -a notify=$CRAWLER_NOTIFY \
+    $PYTHON_PATH/python $PYTHON_PATH/scrapy
+      crawl all \
+        -a pid_path=$PID_PATH \
+        -a notify=$CRAWLER_NOTIFY \
       2>&1 | \
       /usr/sbin/rotatelogs /var/log/crawler/crawllog_%Y%m%d 86400 &
   fi

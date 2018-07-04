@@ -14,7 +14,7 @@ import hashlib
 import urllib
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine import ResultProxy
-from sqlalchemy import or_
+from sqlalchemy import or_, desc
 from pprint import pprint
 from datetime import datetime
 from time import mktime

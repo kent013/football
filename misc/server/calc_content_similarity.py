@@ -48,7 +48,7 @@ session_maker = sessionmaker(bind=engine)
 session = session_maker()
 session.expire_on_commit = False
 
-results = session.query(Articles.hash).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.similar_article_calculated == False).order_by(ArticleContents.id).all()
+results = session.query(Articles.hash).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.similar_article_calculated == False, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
 
 print('Start calculation')
 try:

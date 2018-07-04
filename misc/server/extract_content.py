@@ -53,7 +53,7 @@ else:
 
 #extractor = ExtractContent({"debug":True, 'threthold': 100})
 extractor = ExtractContent()
-print('start extraction')
+print('Start extraction')
 try:
     for result in results:
         text = ''

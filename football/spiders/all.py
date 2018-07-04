@@ -103,14 +103,6 @@ class AllSpider(CommonSpider):
         job.instruction = encoder.encode({'feed_id': feed.id, 'offset': offset})
         session.add(job)
 
-    #roomが存在するかどうか
-    def is_article_exists(self, url_hash):
-        session = self.Session()
-        result = session.query(Articles).filter(Articles.Football_id == url_hash)
-        count = result.count()
-        session.close()
-        return count != 0
-
     def parse_feed(self, response):
         if not self.validate_response(self.crawler_job.target, response):
             return
@@ -210,7 +202,7 @@ class AllSpider(CommonSpider):
 
     #get one crawler job from queue
     def get_crawler_job_worker(self, session):
-        results = session.query(CrawlerJobs).filter(CrawlerJobs.started_at == None).filter(or_(CrawlerJobs.retry_at == None, CrawlerJobs.retry_at < datetime.now())).order_by(CrawlerJobs.priority).with_entities(CrawlerJobs.id).limit(20).all()
+        results = session.query(CrawlerJobs).filter(CrawlerJobs.started_at == None).filter(or_(CrawlerJobs.retry_at == None, CrawlerJobs.retry_at < datetime.now())).order_by(desc(CrawlerJobs.priority)).with_entities(CrawlerJobs.id).limit(20).all()
         crawler_job = None
         if len(results) > 0:
             index = random.randint(0, len(results) - 1)

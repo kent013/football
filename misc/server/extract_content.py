@@ -46,9 +46,9 @@ session_maker = sessionmaker(bind=db_connect())
 session = session_maker()
 
 if args.renew:
-    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
+    results = session.query(ArticleContents.content, Articles.hash, Articles.url, Articles.title, Articles.summary, Feeds.language).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id).order_by(ArticleContents.id).all()
 else:
-    results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content == None).order_by(ArticleContents.id).all()
+    results = session.query(ArticleContents.content, Articles.hash, Articles.url, Articles.title, Articles.summary, Feeds.language).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content == None).order_by(ArticleContents.id).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 5).order_by(ArticleContents.id).all()
 
 #extractor = ExtractContent({"debug":True, 'threthold': 100})
@@ -56,12 +56,11 @@ extractor = ExtractContent()
 
 try:
     for result in results:
-        article_content, article, feed = result
         text = ''
-        content = article_content.content
-        pprint(article.url)
+        content = result.content
+        pprint(result.url)
         try:
-            if feed.language == 'ja':
+            if result.language == 'ja':
                 extractor.analyse(content)
                 text, title = extractor.as_text()
                 text = re.sub('名前：[^\s]+', '', text)
@@ -76,10 +75,10 @@ try:
                 text = extract_content(content)
         except Exception as e:
             print(e)
-   
+
         if not text:
-            text = article.summary
-        article_content.extracted_content = article.title.strip() + " " + text.strip()
+            text = result.summary
+        extracted_content = result.title.strip() + " " + text.strip()
 
         # extract main image
         bs = BeautifulSoup(content, "lxml")
@@ -93,11 +92,11 @@ try:
                 continue
 
             if not re.match('http', src):
-                src = urljoin(article.url, src)
+                src = urljoin(result.url, src)
 
             if re.search('common|share|button|footer|header|head|logo|menu|banner|parts|thumbnail|ranking|icon|copyright|feedly|ico|seesaablog.gif|fan_read.gif|fan_received.gif|captcha|/n.gif|/u.gif|chart.apis.google.com|images-amazon.com|facebook.com|powered_by|rss.rssad.jp|blank|navi|custom.search.yahoo.co.jp|pixel|xrea.com|w=64|i2i|microad.jp|resize.blogsys.jp|b.hatena.ne.jp|accesstrade.net|poweredby|scorecardresearch.com|ssc.api.bbc.com|sa.bbc.co.uk|amazon-adsystem.com|zero-tools.com|clicktrack2.ziyu.net|nakanohito.jp|pv.geki.jp|arrow_left|arrow_right|spacer.gif|spike.png|wp-content/themes', src):
                 continue
-            print("  " + src)
+            #print("  " + src)
             width, height = getsizes(src, dc)
             if not width:
                 continue
@@ -107,14 +106,12 @@ try:
                 primary_image_url = src
                 max = square
 
-        article_content.primary_image_url = primary_image_url
-        if article_content.primary_image_url:
-            print("  PRIMARY IMAGE: " + article_content.primary_image_url)
+        if primary_image_url:
+            print("  PRIMARY IMAGE: " + primary_image_url)
         else:
             print("  PRIMARY IMAGE: Not Detected")
 
-
-        session.add(article_content)
+        session.query(ArticleContents).filter(ArticleContents.article_hash == result.hash).update({"primary_image_url": primary_image_url, "extracted_content": extracted_content})
     session.commit()
 except Exception as e:
     print(e)

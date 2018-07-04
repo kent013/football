@@ -44,7 +44,7 @@ parser.add_argument("-n","--renew",
 )
 args = parser.parse_args()
 
-results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
+results = session.query(ArticleContents.extracted_content, Articles.hash, Feeds.language).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 45).order_by(ArticleContents.id).all()
 
 char_filters = [UnicodeNormalizeCharFilter(), RegexReplaceCharFilter('&[^&]+;', '')]
@@ -62,23 +62,21 @@ if not args.renew and os.path.isfile(model_cache_path):
 
 for result in results:
     try:
-        article_content, article, feed = result
-        if article.hash in trainings:
+        if result.hash in trainings:
             continue
-        if not article_content.extracted_content:
+        if not result.extracted_content:
             continue
-        print('  ' + article.url)
-        content = article_content.extracted_content
+        print('  ' + result.hash)
+        content = result.extracted_content
         words = []
-        if feed.language == "ja":
+        if result.language == "ja":
             tokens = list(analyzer.analyze(content))
             for token in tokens:
                 words.append(token.surface)
-                #print(token)
-
-        elif feed.language == "en":
+        elif result.language == "en":
             words = word_tokenize(content)
-        trainings[article.hash] = TaggedDocument(words, tags=[article.hash])
+
+        trainings[result.hash] = TaggedDocument(words, tags=[result.hash])
     except Exception as e:
         print(e)
 
@@ -87,3 +85,5 @@ session.close()
 f = open(model_cache_path, 'wb')
 pickle.dump(trainings, f)
 f.close()
+
+print('Done')

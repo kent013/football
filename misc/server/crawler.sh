@@ -24,5 +24,6 @@ do
         -a notify=$CRAWLER_NOTIFY \
       2>&1 | \
       /usr/sbin/rotatelogs /var/log/crawler/crawllog_%Y%m%d 86400 &
+      sleep 1
   fi
 done

@@ -53,7 +53,7 @@ else:
 
 #extractor = ExtractContent({"debug":True, 'threthold': 100})
 extractor = ExtractContent()
-
+print('start extraction')
 try:
     for result in results:
         text = ''
@@ -119,3 +119,5 @@ except Exception as e:
     raise
 finally:
     session.close()
+
+print('  Done')

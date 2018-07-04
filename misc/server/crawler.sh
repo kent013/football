@@ -18,7 +18,7 @@ do
   if [ ! -e $CRAWLER_PID_PATH ]; then
     touch $CRAWLER_PID_PATH
     echo $$ > $CRAWLER_PID_PATH
-    $PYTHON_PATH/python $PYTHON_PATH/scrapy
+    $PYTHON_PATH/python $PYTHON_PATH/scrapy \
       crawl all \
         -a pid_path=$CRAWLER_PID_PATH \
         -a notify=$CRAWLER_NOTIFY \

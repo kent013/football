@@ -1,0 +1,7 @@
+{
+  "football_crawler_1":{"alias":"fc1","key":"aws.pem"},
+  "football_crawler_2":{"alias":"fc2","key":"aws.pem"},
+  "football_crawler_3":{"alias":"fc3","key":"aws.pem"},
+  "football_web":{"alias":"fw","key":"aws.pem"},
+  "football_analyzer":{"alias":"fa","key":"aws.pem"}
+}

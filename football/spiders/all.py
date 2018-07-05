@@ -195,7 +195,7 @@ class AllSpider(CommonSpider):
 
     #get one crawler job from queue
     def get_crawler_job_worker(self, session):
-        results = session.query(CrawlerJobs).filter(CrawlerJobs.started_at == None).filter(or_(CrawlerJobs.retry_at == None, CrawlerJobs.retry_at < datetime.now())).order_by(desc(CrawlerJobs.priority)).with_entities(CrawlerJobs.id).limit(20).all()
+        results = session.query(CrawlerJobs).filter(CrawlerJobs.started_at == None).filter(or_(CrawlerJobs.retry_at == None, CrawlerJobs.retry_at < datetime.now())).order_by(desc(CrawlerJobs.priority)).with_entities(CrawlerJobs.id).limit(5).all()
         crawler_job = None
         if len(results) > 0:
             index = random.randint(0, len(results) - 1)

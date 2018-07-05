@@ -6,7 +6,7 @@ $pdo = _get_connection();
 
 $action = _getArg('action', null);
 if($action == 'initial'){
-    $result = $pdo->query("SELECT count(id) FROM crawler_jobs AS c WHERE c.started_at IS NULL AND c.type = 'initial'");
+    $result = $pdo->query("SELECT count(id) FROM crawler_jobs AS c WHERE c.started_at IS NULL AND (c.type = 'initial' OR c.type = 'feed')");
     $result = $result->fetch();
       if((int)$result[0] > 0){
         return;

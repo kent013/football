@@ -21,7 +21,7 @@ sudo hostname [instance alias in servers.json]
 
 ### Install Linux Packages
 ```bash
-sudo yum install git php71 php71-pdo php71-mysqlnd mysql gcc bzip2-devel readline-devel openssl-devel sqlite-devel mysql57 mysql57-devel gcc gcc-c++ libxml2-devel
+sudo yum install git php71 php71-pdo php71-mysqlnd mysql-devel gcc bzip2-devel readline-devel openssl-devel sqlite-devel mysql57 mysql57-devel gcc gcc-c++ libxml2-devel
 ```
 #### mysql57 workaround
 
@@ -53,7 +53,6 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-CRAWLER_SEPARATION_COUNT=6
 CRAWLER_NOTIFY=0
 ```
 
@@ -75,7 +74,7 @@ pyenv rehash
 ```bash
 curl -skL https://bootstrap.pypa.io/get-pip.py | python
 
-pip install scrapy sqlalchemy slackweb python-dateutil feedparser mysqlclient extractcontent3 numpy Cython extractcontent Pillow diskcache BeautifulSoup4 nltk
+pip install scrapy sqlalchemy slackweb python-dateutil feedparser mysqlclient extractcontent3 numpy Cython Pillow diskcache BeautifulSoup4 nltk
 pip install dragnet
 ```
 
@@ -125,16 +124,16 @@ cp football/football/settings-dist.py football/football/settings.py
 vi football/football/settings.py
 ```
 
-### Test settings through crawler
-
-```bash
-cd ~/football
-scrapy crawl all
-```
-
 ### Create crawler log dir
 
 ```bash
 sudo mkdir /var/log/crawler/
 sudo chown ec2-user.ec2-user /var/log/crawler/
+```
+
+### Test settings through crawler
+
+```bash
+cd ~/football
+scrapy crawl all
 ```

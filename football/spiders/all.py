@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy.contrib.linkextractors import LinkExtractor
-from scrapy.contrib.spiders import Rule
-from scrapy import log
-from scrapy.spider import Spider
+from scrapy.spiders import Rule
+from scrapy.spiders import Spider
 from scrapy.utils.serialize import ScrapyJSONEncoder
 
 import logging
@@ -70,7 +68,6 @@ class AllSpider(CommonSpider):
                     url = self.crawler_job.target
                 elif self.crawler_job.type == 'article':
                     url = self.crawler_job.target
-                print(self.crawler_job.type)
 
                 if not url:
                     msg = 'type:' + self.crawler_job.type + ' is not implemented'
@@ -91,7 +88,6 @@ class AllSpider(CommonSpider):
         job_count = session.query(CrawlerJobs).filter(CrawlerJobs.type == job_type, CrawlerJobs.feed_id == feed.id, CrawlerJobs.started_at == None).count()
 
         if job_count:
-            pprint('  already exists')
             return
 
         job = self.clone_job()
@@ -123,7 +119,6 @@ class AllSpider(CommonSpider):
                 article_count = session.query(Articles).filter(Articles.hash == article_hash).count()
 
                 if article_count:
-                    pprint('  already exists')
                     continue
 
                 article = FootballArticleItem()
@@ -164,7 +159,6 @@ class AllSpider(CommonSpider):
         if not self.validate_response(self.crawler_job.target, response):
             return
 
-        pprint(self.crawler_job)
         content = FootballArticleContentItem()
         content['article_hash'] = hashlib.sha256(self.crawler_job.target.encode('utf-8')).hexdigest()
         content['content_hash'] = hashlib.sha256(response.text.encode('utf-8')).hexdigest()
@@ -174,7 +168,6 @@ class AllSpider(CommonSpider):
 
     #指定されたURLからrequestを作成。
     def make_requests_from_url(self, url):
-        print(url)
         request = super(AllSpider, self).make_requests_from_url(url)
         request.meta['start_url'] = url
         request.meta['handle_httpstatus_list'] = list(range(400, 499)) + list(range(500, 599))

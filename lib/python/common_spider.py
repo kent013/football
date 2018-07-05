@@ -18,15 +18,12 @@ import logging
 import dateutil.parser
 
 import scrapy
-from scrapy import log
 from scrapy import signals
-from scrapy.contrib.linkextractors import LinkExtractor
-from scrapy.contrib.spiders import Rule
-from scrapy.spider import Spider
+from scrapy.spiders import Rule
+from scrapy.spiders import Spider
 from scrapy.http.request import Request
 from scrapy.http import FormRequest
 from scrapy.utils.serialize import ScrapyJSONEncoder
-from scrapy.xlib.pydispatch import dispatcher
 from http.cookies import SimpleCookie
 
 from sqlalchemy.orm import sessionmaker

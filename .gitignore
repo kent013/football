@@ -1,6 +1,7 @@
 __pycache__
 __init__.py
 football/settings.py
+misc/local/servers.json
 var/images/*
 var/models/*
 web/var/twig/*

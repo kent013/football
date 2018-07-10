@@ -4,7 +4,7 @@ use JasonGrimes\Paginator;
 function action_worker($request, $response, $service) {
     $pdo = _get_connection();
 
-    $page = $request->param('page', 1);
+    $page = $request->param('page', 0);
 
     $result = $pdo->query("SELECT count(a.id) FROM articles AS a, article_contents AS ac WHERE ac.article_hash = a.hash");
     $result = $result->fetch();

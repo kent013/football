@@ -51,3 +51,8 @@ SLACK_WEBHOOK = 'https://hooks.slack.com/services'
 SLACK_NOTIFY_USERS = '@kent013'
 SLACK_MSG_ROOM_PARSER_ERROR = "Parser error is occurred. Check it out now! "
 SLACK_MSG_ROOM_PARSER_NOT_FOUND = "Parse function for rooms is not found. Perhaps Airbnb's view is changed. Check it out now!"
+
+TWITTER_CONSUMER_KEY = ""
+TWITTER_CONSUMER_SECRET = ""
+TWITTER_ACCESS_TOKEN = ""
+TWITTER_ACCESS_TOKEN_SECRET = ""

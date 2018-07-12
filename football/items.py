@@ -53,6 +53,7 @@ class FootballArticleContentItem(scrapy.Item):
     article_hash = scrapy.Field()
     content_hash = scrapy.Field()
     similar_article_calculated = scrapy.Field()
+    tweeted = scrapy.Field()
     created_at = scrapy.Field()
     updated_at = scrapy.Field()
 

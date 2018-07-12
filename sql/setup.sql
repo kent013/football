@@ -81,6 +81,7 @@ CREATE TABLE article_contents (
   `article_hash` VARCHAR(255) NOT NULL,
   `content_hash` VARCHAR(255) NOT NULL,
   `similar_article_calculated` BOOLEAN NOT NULL DEFAULT 0,
+  `tweeted` BOOLEAN NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
   `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 

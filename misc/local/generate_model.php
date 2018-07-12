@@ -20,7 +20,7 @@ foreach($tables[0] as $index => $table){
         continue;
     }
 
-    preg_match_all('/^\s*`(.+?)` (.+?) (NOT NULL|NULL)/ms', $table, $defs);
+    preg_match_all('/^\s*`([^`]+)` ([^ ]+)( (NOT NULL|NULL))?( DEFAULT ([^ ,]+))?/ms', $table, $defs);
 
     $model = <<<EOS
 class $plural_name(DeclarativeBase):
@@ -34,11 +34,13 @@ EOS;
 class Football{$single_name}Item(scrapy.Item):
 
 EOS;
-
+var_dump($defs);
     foreach($defs[0] as $k => $def){
         $property = $defs[1][$k];
         $type = $defs[2][$k];
         $nullable = empty($defs[3][$k]);
+        $default = !empty($defs[5][$k]);
+        $attributes = [];
         if($property != "id"){
             $column_type = "";
             if($type == "TEXT" || preg_match('/VARCHAR/', $type) || $type == "MEDIUMTEXT"){
@@ -52,12 +54,22 @@ EOS;
             }else if($type == "BOOLEAN"){
                 $column_type = "Boolean";
             }
+            $attributes[] = $column_type;
+
             $nullable_bool = $nullable ? "True" : "False";
-            if(in_array($property, ["created_at", "updated_at"])){
-                $model .= "    $property = Column($column_type, default=datetime.now())\n";
-            }else{
-                $model .= "    $property = Column($column_type, nullable=$nullable_bool)\n";
+            $attributes[] = "nullable=$nullable_bool";
+
+            if($default){
+                $defval = $defs[6][$k];
+                if($defval == "current_timestamp"){
+                    $attributes[] = "default=datetime.now()";
+                }else{
+                    $attributes[] = "default=" . $defval;
+                }
             }
+
+            var_dump($attributes);
+            $model .= "    $property = Column(" . implode(",", $attributes) . ")\n";
         }
         $item .= "    $property = scrapy.Field()\n";
     }

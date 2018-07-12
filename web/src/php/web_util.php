@@ -4,7 +4,11 @@ require_once(__DIR__ . "/settings.php");
 
 function call_action_worker($name, $request, $response, $service){
     require_once(__DIR__ . "/actions/{$name}.php");
-    return action_worker($request, $response, $service);
+    try{
+        return action_worker($request, $response, $service);
+    }catch(Exception $e){
+        var_dump($e);
+    }
 }
 
 function render_template($template, $vars = []){

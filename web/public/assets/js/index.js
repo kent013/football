@@ -15,7 +15,10 @@ $(document).ready(function(){
 
   $('#search_button').on('click', function (e) {
         e.preventDefault();
-        window.location.href= $('#search_form').attr('action') + $('#search_query').val();
+        val = $('#search_query').val()
+        if(val){
+          window.location.href= $('#search_form').attr('action') + $('#search_query').val();
+        }
         return false;
     });
 });

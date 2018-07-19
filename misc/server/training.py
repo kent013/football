@@ -16,6 +16,6 @@ with open(script_dir + '/../../var/models/tokenized.pickle', mode='rb') as f:
     trainings = pickle.load(f)
 
 print('Start training')
-m = Doc2Vec(documents=trainings.values(), dm=1, vector_size=300, window=5, min_count=5, alpha=0.1, epochs=55, workers=2)
+m = Doc2Vec(documents=trainings.values(), dm=1, vector_size=500, window=5, min_count=10, alpha=0.01, epochs=55, workers=2)
 m.save(script_dir + "/../../var/models/doc2vec.model")
 print('  Done')

@@ -54,6 +54,20 @@ class FootballArticleContentItem(scrapy.Item):
     content_hash = scrapy.Field()
     similar_article_calculated = scrapy.Field()
     tweeted = scrapy.Field()
+    token_extracted = scrapy.Field()
+    created_at = scrapy.Field()
+    updated_at = scrapy.Field()
+
+class FootballTokenItem(scrapy.Item):
+    id = scrapy.Field()
+    base_form = scrapy.Field()
+    part_of_speech1 = scrapy.Field()
+    part_of_speech2 = scrapy.Field()
+    part_of_speech3 = scrapy.Field()
+    part_of_speech4 = scrapy.Field()
+    occurrence_count = scrapy.Field()
+    is_noise = scrapy.Field()
+    neo4j_node_id = scrapy.Field()
     created_at = scrapy.Field()
     updated_at = scrapy.Field()
 

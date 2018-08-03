@@ -99,6 +99,23 @@ class ArticleContents(DeclarativeBase):
     content_hash = Column(String,nullable=False)
     similar_article_calculated = Column(Boolean,nullable=False,default=0)
     tweeted = Column(Boolean,nullable=False,default=0)
+    token_extracted = Column(Boolean,nullable=False,default=0)
+    created_at = Column(DateTime,nullable=False,default=datetime.now())
+    updated_at = Column(DateTime,nullable=False,default=datetime.now())
+
+class Tokens(DeclarativeBase):
+    """Sqlalchemy model for tokens table"""
+    __tablename__ = "tokens"
+
+    id = Column(Integer, primary_key=True)
+    base_form = Column(String,nullable=False)
+    part_of_speech1 = Column(String,nullable=False)
+    part_of_speech2 = Column(String,nullable=False)
+    part_of_speech3 = Column(String,nullable=False)
+    part_of_speech4 = Column(String,nullable=False)
+    occurrence_count = Column(Integer,nullable=False,default=0)
+    is_noise = Column(Boolean,nullable=False,default=0)
+    neo4j_node_id = Column(Integer,nullable=False)
     created_at = Column(DateTime,nullable=False,default=datetime.now())
     updated_at = Column(DateTime,nullable=False,default=datetime.now())
 

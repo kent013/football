@@ -1,0 +1,83 @@
+body {
+  padding-top: 5rem;
+}
+
+.nodes {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.links {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.node text {
+  text-anchor: middle;
+  font: 6px sans-serif;
+  text-shadow: 2px 2px 0 #fff,
+              -2px 2px 0 #fff,
+              2px -2px 0 #fff,
+              -2px -2px 0 #fff;
+  text-shadow: 2px 2px 1px #fff,
+              -2px 2px 1px #fff,
+              2px -2px 1px #fff,
+              -2px -2px 1px #fff;
+}
+
+.links text {
+  text-anchor: middle;
+  font: 4px sans-serif;
+  text-shadow: 2px 2px 0 #fff,
+              -2px 2px 0 #fff,
+              2px -2px 0 #fff,
+              -2px -2px 0 #fff;
+  text-shadow: 2px 2px 1px #fff,
+              -2px 2px 1px #fff,
+              2px -2px 1px #fff,
+              -2px -2px 1px #fff;
+}
+.links path {
+  stroke: #666;
+  stroke-width: 1px;
+  fill: none;
+}
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.links .selected line {
+  stroke: red;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 0.1rem;
+}
+
+.nodes .selectedSubjectToken circle {
+  stroke: red;
+  stroke-width: 0.1rem;
+}
+.nodes .selectedObjectToken circle {
+  stroke: blue;
+  stroke-width: 0.1rem;
+}
+
+#graph {
+  width:100%;
+  height:100%;
+}
+
+div.graph {
+  height: 100%;
+}
+
+#token_relationship_type_attributes > div.py-1:first-child {
+  padding-top: 0!important;
+}
+
+#token_relationship_type_attributes_container {
+  display:none;
+}

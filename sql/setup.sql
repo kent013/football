@@ -82,12 +82,52 @@ CREATE TABLE article_contents (
   `content_hash` VARCHAR(255) NOT NULL,
   `similar_article_calculated` BOOLEAN NOT NULL DEFAULT 0,
   `tweeted` BOOLEAN NOT NULL DEFAULT 0,
+  `token_extracted` BOOLEAN NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
   `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
 
   PRIMARY KEY (`id`),
   INDEX `article_contents_article_hash_idx` (`article_hash` ASC),
   INDEX `article_contents_extracted_contents_idx` (`extracted_content`(1) ASC)
+);
+
+CREATE TABLE tokens (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `base_form` VARCHAR(500) NOT NULL,
+  `part_of_speech1` VARCHAR(100) NULL,
+  `part_of_speech2` VARCHAR(100) NULL,
+  `part_of_speech3` VARCHAR(100) NULL,
+  `part_of_speech4` VARCHAR(100) NULL,
+  `occurrence_count` INT NOT NULL DEFAULT 0,
+  `is_noise` BOOLEAN NOT NULL DEFAULT 0,
+  `hash` VARCHAR(255) NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+
+  PRIMARY KEY (`id`),
+  INDEX `tokens_id_idx` (`id` ASC),
+  INDEX `tokens_surface_idx` (`base_form`(500) ASC),
+  INDEX `tokens_occurrence_count_idx` (`occurrence_count` ASC),
+  INDEX `tokens_is_noise_idx` (`is_noise` ASC),
+  INDEX `tokens_hash_idx` (`hash` ASC)
+);
+
+CREATE TABLE token_types (
+  `id` INT NOT NULL,
+  `display_name` TEXT NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE token_relationship_types (
+  `id` INT NOT NULL,
+  `display_name` TEXT NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE similar_articles (
@@ -171,6 +211,19 @@ INSERT INTO site_types(id, display_name) VALUES (1, '公式サイト');
 INSERT INTO site_types(id, display_name) VALUES (2, 'ニュースサイト');
 INSERT INTO site_types(id, display_name) VALUES (3, 'まとめサイト');
 INSERT INTO site_types(id, display_name) VALUES (4, 'Blog');
+
+INSERT INTO token_types(id, display_name) VALUES(0, 'None');
+INSERT INTO token_types(id, display_name) VALUES(1, 'Person');
+INSERT INTO token_types(id, display_name) VALUES(2, 'Event');
+INSERT INTO token_types(id, display_name) VALUES(3, 'Team');
+INSERT INTO token_types(id, display_name) VALUES(4, 'Place');
+INSERT INTO token_types(id, display_name) VALUES(5, 'League');
+INSERT INTO token_types(id, display_name) VALUES(6, 'Association');
+
+INSERT INTO token_relationship_types(id, display_name) VALUES(0, 'None');
+INSERT INTO token_relationship_types(id, display_name) VALUES(1, 'AliasOf');
+INSERT INTO token_relationship_types(id, display_name) VALUES(2, 'BelongsTo');
+INSERT INTO token_relationship_types(id, display_name) VALUES(3, 'OneOf');
 
 INSERT INTO feeds(id, site_category_id, site_type_id, language, title, site_url, feed_url, description) VALUES(1, 1, 3, 'ja', 'SAMURAI Footballers', 'http://samuraisoccer.doorblog.jp/', 'http://samuraisoccer.doorblog.jp/index.rdf', '～海外への挑戦～');
 INSERT INTO feeds(id, site_category_id, site_type_id, language, title, site_url, feed_url, description) VALUES(2, 1, 3, 'ja', 'Samurai GOAL', 'http://samuraigoal.doorblog.jp/', 'http://samuraigoal.doorblog.jp/index.rdf', '');

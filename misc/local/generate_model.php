@@ -34,7 +34,6 @@ EOS;
 class Football{$single_name}Item(scrapy.Item):
 
 EOS;
-var_dump($defs);
     foreach($defs[0] as $k => $def){
         $property = $defs[1][$k];
         $type = $defs[2][$k];
@@ -68,7 +67,6 @@ var_dump($defs);
                 }
             }
 
-            var_dump($attributes);
             $model .= "    $property = Column(" . implode(",", $attributes) . ")\n";
         }
         $item .= "    $property = scrapy.Field()\n";

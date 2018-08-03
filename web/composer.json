@@ -3,6 +3,8 @@
         "klein/klein": "^2.1",
         "twig/twig": "^2.0",
         "twig/extensions": "^1.5",
-        "jasongrimes/paginator": "~1.0"
+        "jasongrimes/paginator": "~1.0",
+        "graphaware/neo4j-php-client": "^4.8",
+        "ramsey/uuid": "^3.8"
     }
 }

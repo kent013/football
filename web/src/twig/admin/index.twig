@@ -1,0 +1,133 @@
+{% extends 'admin/share/layout.twig' %}
+
+{% block title %}The Football Spot Admin Console{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-9">
+    <div class="row graph">
+      <div class="col">
+        <svg class="border" id="graph"></svg>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <form>
+      <div class="form-row pb-1">
+        <label class="col-sm-3 col-form-label col-form-label-sm" for="subject_token">Subject</label>
+        <div class="col-sm-9">
+          <select class="form-control" id="subject_token" placeholder="Subject Token"></select>
+        </div>
+      </div>
+      <div class="form-row py-1">
+        <legend class="col-sm-3 col-form-label col-form-label-sm">Noise</legend>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input form-control-sm" type="radio" name="subject_token_is_noise" id="subject_token_is_noise1" value="all">
+            <label class="form-check-label form-control-sm" for="subject_token_is_noise1">Both</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input form-control-sm" type="radio" name="subject_token_is_noise" id="subject_token_is_noise2" value="exclude" checked>
+            <label class="form-check-label form-control-sm" for="subject_token_is_noise2">Exclude</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input form-control-sm" type="radio" name="subject_token_is_noise" id="subject_token_is_noise3" value="include">
+            <label class="form-check-label form-control-sm" for="subject_token_is_noise3">Include</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-row pt-1">
+        <legend class="col-sm-3 col-form-label col-form-label-sm">Processed</legend>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input form-control-sm" type="radio" name="subject_token_is_processed" id="subject_token_is_processed1" value="all" checked>
+            <label class="form-check-label form-control-sm" for="subject_token_is_processed1">Both</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input form-control-sm" type="radio" name="subject_token_is_processed" id="subject_token_is_processed2" value="exclude">
+            <label class="form-check-label form-control-sm" for="subject_token_is_processed2">Exclude</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input form-control-sm" type="radio" name="subject_token_is_processed" id="subject_token_is_processed3" value="include">
+            <label class="form-check-label form-control-sm" for="subject_token_is_processed3">Include</label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="form-row pb-1">
+        <label class="col-sm-3 col-form-label col-form-label-sm" for="token_type">Node Type</label>
+        <div class="col-sm-9">
+          <select class="form-control form-control-sm" id="token_type" placeholder="Token">
+            {% for type in token_types %}
+            <option value="{{ type.id }}">{{ type.display_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row py-1">
+        <label class="col-sm-3 col-form-label col-form-label-sm">Attributes</label>
+        <div class="col-sm-9" id="token_type_attributes">
+          <div class="form-row">
+            <label class="col-sm-2 col-form-label col-form-label-sm form-check-label form-control-sm" for="is_noise">Noise</label>
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline align-middle">
+                    <input type="checkbox" class="form-check-input" id="is_noise">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row pt-1">
+        <div class="col-sm-12">
+          <button type="button" class="btn btn-primary" id="update_token_button">Add/Update Node</button> 
+          <button type="button" class="btn btn-danger" id="remove_token_button">Remove Node from Neo4j</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <form>
+      <div class="form-row pb-1">
+        <label class="col-sm-3 col-form-label col-form-label-sm" for="token_relationship_type">Relation type</label>
+        <div class="col-sm-9">
+          <select class="form-control form-control-sm" id="token_relationship_type" placeholder="Token">
+            {% for type in token_relationship_types %}
+            <option value="{{ type.id }}">{{ type.display_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row py-1" id="token_relationship_type_attributes_container">
+        <label class="col-sm-3 col-form-label col-form-label-sm">Attributes</label>
+        <div class="col-sm-9" id="token_relationship_type_attributes">
+        </div>
+      </div>
+
+      <div class="form-row py-1">
+        <label class="col-sm-3 col-form-label col-form-label-sm" for="object_token">Object</label>
+        <div class="col-sm-9">
+          <select class="form-control" id="object_token" placeholder="Object Token"></select>
+        </div>
+      </div>
+
+      <div class="form-row pt-1">
+        <div class="col-sm-12">
+          <button type="button" class="btn btn-primary" id="update_token_relationship_button">Add/Update Relation</button> 
+          <button type="button" class="btn btn-danger" id="remove_token_relationship_button">Remove Relation from Neo4j</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <form>
+      <div class="form-row">
+        <div class="col-sm-12">
+          <button type="button" class="btn btn-primary" id="resetGraphButton">Reset</button> 
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

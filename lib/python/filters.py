@@ -38,9 +38,11 @@ class FootballNounFilter(TokenFilter):
                 continue
             if parts[0] == u'名詞' and parts[1] == u'接尾':
                 continue
-            if re.search('[0-9]+([年月日分]|ゴール)$', token.surface):
+            if re.search('[0-9一-十百千万]+([年月日時分秒位]|ゴール)$', token.surface):
                 continue
-            if re.search('[0-9]+$', token.surface):
+            if re.search('[0-9一-十百千万]+$', token.surface):
+                continue
+            if re.search('[wー]{4,}$', token.surface):
                 continue
             if token.surface in [u'次ページ']:
                 continue

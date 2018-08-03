@@ -1,0 +1,66 @@
+{
+    "labels": {
+        "Person": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "Event": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "from",
+                "type": "date",
+                "placeholder": "2018-10-01"
+            },
+            {
+                "name": "to",
+                "type": "date",
+                "placeholder": "2019-09-30"
+            }
+        ],
+        "Team": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "Place": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "League": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "Association": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ]
+    },
+    "relationships": {
+        "AliasOf": [],
+        "BelongsTo": [
+            {
+                "name": "from",
+                "type": "date",
+                "placeholder": "2018-10-01"
+            },
+            {
+                "name": "to",
+                "type": "date",
+                "placeholder": "2019-10-01"
+            }
+        ],
+        "OneOf": []
+    }
+}

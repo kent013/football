@@ -1,5 +1,7 @@
 <?php
+use GraphAware\Neo4j\Client\ClientBuilder;
 require_once(__DIR__ . "/../../../lib/php/util.php");
+require_once(__DIR__ . "/db_util.php");
 require_once(__DIR__ . "/settings.php");
 
 function call_action_worker($name, $request, $response, $service){
@@ -40,4 +42,11 @@ function getSettings($key = null){
         return $football_web_settings;
     }
     return $football_web_settings[$key];
+}
+function getNeo4jConnection($tag = "neo4j"){
+    static $client = null;
+    if(is_null($client)){
+        $client = ClientBuilder::create()->addConnection('default', getSettings($tag))->build();
+    }
+    return $client;
 }

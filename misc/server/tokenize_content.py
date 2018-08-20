@@ -3,7 +3,7 @@ import sys
 import os
 
 script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-sys.path.append(script_dir + "/../../lib/python/")
+sys.path.append(script_dir + "/../../lib/python/src/")
 sys.path.append(script_dir + "/../../")
 
 from sqlalchemy.orm import sessionmaker
@@ -23,7 +23,8 @@ from gensim.models.doc2vec import TaggedDocument
 
 from nltk.tokenize import word_tokenize
 
-from filters import FootballCompoundNounFilter, FootballNounFilter
+from filters import FootballCompoundNounFilter, FootballNounFilter, FootballCompoundNounFilter, FootballAliasFilter
+from neo4j_util import get_word_aliases
 
 import pickle
 import argparse
@@ -47,10 +48,13 @@ args = parser.parse_args()
 results = session.query(ArticleContents.extracted_content, Articles.hash, Feeds.language).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.extracted_content != None).order_by(ArticleContents.id).all()
 #results = session.query(ArticleContents, Articles, Feeds).filter(Articles.hash == ArticleContents.article_hash, Articles.feed_id == Feeds.id, ArticleContents.id == 45).order_by(ArticleContents.id).all()
 
+aliases = get_word_aliases()
+
 char_filters = [UnicodeNormalizeCharFilter(), RegexReplaceCharFilter('&[^&]+;', '')]
 tokenizer = Tokenizer(mmap=True)
-token_filters = [FootballCompoundNounFilter(), FootballNounFilter(), POSKeepFilter('名詞')]
+token_filters = [FootballCompoundNounFilter(), FootballNounFilter(), POSKeepFilter('名詞'), FootballAliasFilter(aliases)]
 analyzer = Analyzer(char_filters, tokenizer, token_filters)
+
 
 print('Start tokenize')
 
@@ -71,6 +75,7 @@ for result in results:
         words = []
         if result.language == "ja":
             tokens = list(analyzer.analyze(content))
+
             for token in tokens:
                 words.append(token.surface)
         elif result.language == "en":

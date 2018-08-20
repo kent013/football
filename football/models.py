@@ -115,7 +115,25 @@ class Tokens(DeclarativeBase):
     part_of_speech4 = Column(String,nullable=False)
     occurrence_count = Column(Integer,nullable=False,default=0)
     is_noise = Column(Boolean,nullable=False,default=0)
-    neo4j_node_id = Column(Integer,nullable=False)
+    hash = Column(String,nullable=False)
+    created_at = Column(DateTime,nullable=False,default=datetime.now())
+    updated_at = Column(DateTime,nullable=False,default=datetime.now())
+
+class TokenTypes(DeclarativeBase):
+    """Sqlalchemy model for token_types table"""
+    __tablename__ = "token_types"
+
+    id = Column(Integer, primary_key=True)
+    display_name = Column(String,nullable=False)
+    created_at = Column(DateTime,nullable=False,default=datetime.now())
+    updated_at = Column(DateTime,nullable=False,default=datetime.now())
+
+class TokenRelationshipTypes(DeclarativeBase):
+    """Sqlalchemy model for token_relationship_types table"""
+    __tablename__ = "token_relationship_types"
+
+    id = Column(Integer, primary_key=True)
+    display_name = Column(String,nullable=False)
     created_at = Column(DateTime,nullable=False,default=datetime.now())
     updated_at = Column(DateTime,nullable=False,default=datetime.now())
 

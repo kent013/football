@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../../lib/php/util.php');
+require_once(__DIR__ . '/../../lib/php/src/util.php');
 
 function _execAWSCommand($command){
     exec($command, $result);

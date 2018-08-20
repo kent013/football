@@ -24,7 +24,7 @@ function _get_connection($tag = "DATABASE"){
         return $pdo[$tag];
     }
 
-    $setting = file_get_contents(dirname(__FILE__) . '/../../football/settings.py');
+    $setting = file_get_contents(dirname(__FILE__) . '/../../../football/settings.py');
     if(!preg_match('/' . $tag . ' = *\{(.+?)\}/ms', $setting, $regs)){
         _error('DATABASE setting does not exist');
     }
@@ -47,8 +47,8 @@ function _get_connection($tag = "DATABASE"){
     return $pdo[$tag];
 }
 function _get_setting($name, $default = null){
-    $setting = file_get_contents(dirname(__FILE__) . '/../../football/settings.py');
-    if(!preg_match('/' . $name . ' = *(.+?)/', $setting, $regs)){
+    $setting = file_get_contents(dirname(__FILE__) . '/../../../football/settings.py');
+    if(!preg_match('/' . $name . ' = *[\'"]?([^\'"]+)[\'"]?/', $setting, $regs)){
         return $default;
     }
     return $regs[1];

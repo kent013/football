@@ -37,7 +37,7 @@ function action_worker($request, $response, $service) {
         $statement->bindParam(':query', $query);
     }
     $statement->execute();
-    $result = $statement->fetch();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
     $count = $result["count"];
 
     $statement = $pdo->prepare("SELECT * FROM tokens AS t $where ORDER BY occurrence_count DESC LIMIT $tokensPerPage OFFSET :page");
@@ -47,7 +47,7 @@ function action_worker($request, $response, $service) {
     $statement->bindValue(':page', $page * $tokensPerPage, PDO::PARAM_INT);
     $statement->execute();
 
-    $results = $statement->fetchAll();
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $tokens = [];
     foreach($results as $result){
         $text = $result["base_form"] . " (" . $result["occurrence_count"]. ")";

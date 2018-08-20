@@ -12,7 +12,7 @@
 import sys
 import os
 
-sys.path.append(os.path.dirname(__file__) + "/../lib/python")
+sys.path.append(os.path.dirname(__file__) + "/../lib/python/src/")
 
 BOT_NAME = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0'
 

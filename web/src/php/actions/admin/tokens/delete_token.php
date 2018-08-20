@@ -12,7 +12,7 @@ function action_worker($request, $response, $service)
     $token = $statement->fetch(PDO::FETCH_ASSOC);
 
     try{
-        $client = getNeo4jConnection();
+        $client = _get_neo4j_connection();
         $pdo->beginTransaction();
         $tx = $client->transaction();
         $tx->push("MATCH (n) WHERE n.hash = {hash} DELETE n", ['hash' => $token['hash']]);

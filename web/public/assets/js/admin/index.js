@@ -1,5 +1,7 @@
 var zoom;
 var svg;
+var subjectTokenSelect2;
+
 $(document).ready(() => {
   var graph_schema = {};
   function loadSchema() {
@@ -13,7 +15,7 @@ $(document).ready(() => {
   }
   loadSchema();
 
-  $("#subject_token").select2({
+  subjectTokenSelect2 = $("#subject_token").select2({
     placeholder: 'subject Token',
     ajax: {
       url: "/admin/tokens",
@@ -63,7 +65,9 @@ $(document).ready(() => {
         } else {
           $('#token_type').val(0).trigger('change');
         }
-        $('#is_noise').prop("checked", data.token.is_noise == "1");
+        if(data.token.hash){
+          $('#is_noise').prop("checked", data.token.is_noise == "1");
+        }
       }
       if (data.token.hash) {
         return selectNode(target, data.token.hash).then(() => {
@@ -287,7 +291,7 @@ $(document).ready(() => {
           .strength(1))
       simulation
         .force('charge', d3.forceManyBody()
-          .strength(-50))
+          .strength(-80))
       simulation
         .force('center', d3.forceCenter(target_w / 2, target_h / 2))
       simulation
@@ -525,6 +529,84 @@ $(document).ready(() => {
     });
     return target;
   }
+
+  function nextSubjectToken() {
+    $("#subject_token").select2('open');
+    $(".select2-dropdown").hide();
+    setTimeout(() => {
+      $('.select2-search__field').trigger(jQuery.Event('keydown', { keyCode: 40, which: 40 }));
+      $(".select2-dropdown").show();
+      $('.select2-search__field').trigger(jQuery.Event('keydown', { keyCode: 13, which: 13 }));
+    }, 200);
+  }
+
+  $(document).on('keyup', (e) => {
+    if(!e.ctrlKey){
+      return;
+    }
+    switch (e.keyCode) {
+      case (73): // focus on add/update relationship button (Ctrl + i)
+        $("#update_token_relationship_button").trigger('focus')
+        break;
+      case(74): // Next (Ctrl + j)
+        nextSubjectToken();
+        break;
+      case (75): //Previous (Ctrl + k)
+        $("#subject_token").select2('open');
+        $(".select2-dropdown").hide();
+        setTimeout(() => {
+          $('.select2-search__field').trigger(jQuery.Event('keydown', { keyCode: 38, which: 38 }))
+          $(".select2-dropdown").show();
+          $('.select2-search__field').trigger(jQuery.Event('keydown', { keyCode: 13, which: 13 }));
+        }, 200);
+        break;
+      case (78): //Previous (Ctrl + n)
+        if (e.shiftKey) {
+          $('#is_noise').prop("checked", true);
+          $('#update_token_button').trigger('click');
+          setTimeout(() => {
+            nextSubjectToken();
+          }, 300);
+        }else{
+          $('#is_noise').prop("checked", !$('#is_noise').prop("checked"));
+        }
+        break;
+      case (79): //Open object token select2 (Ctrl + s)
+        $("#object_token").select2('open');
+        break;
+      case (82): //focus on token relationship type (Ctrl + r)
+        $('#token_relationship_type').trigger('focus');
+        break;
+      case (83): //Open subject token select2 (Ctrl + s)
+        $("#subject_token").select2('open');
+        break;
+      case (84): //focus on token type (Ctrl + t)
+        $('#token_type').trigger('focus');
+        break;
+      case (85): //focus on update token button (Ctrl + u)
+        $('#update_token_button').trigger('focus');
+        break;
+      case (186): //focus on update token button (Ctrl + ;)
+        var index = $("input[name=subject_token_is_noise]:checked").data('index');
+        if (e.shiftKey) {
+          index = (index - 1) == 0 ? 3 : index - 1;
+        } else {
+          index = (index % 3 + 1);
+        }
+        $("#subject_token_is_noise" + index).prop("checked", true);
+        break;
+      case (222): //focus on update token button (Ctrl + ')
+        var index = $("input[name=subject_token_is_processed]:checked").data('index');
+        if (e.shiftKey) {
+          index = (index - 1) == 0 ? 3 : index - 1;
+        } else {
+          index = (index % 3 + 1);
+        }
+        $("#subject_token_is_processed" + index).prop("checked", true);
+        break;
+    }
+    console.log(e.keyCode);
+  });
 
   simulation_create();
   updateGraph(true);

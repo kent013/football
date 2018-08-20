@@ -3,7 +3,7 @@ import sys
 import os
 
 script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-sys.path.append(script_dir + "/../../lib/python/")
+sys.path.append(script_dir + "/../../lib/python/src/")
 sys.path.append(script_dir + "/../../")
 
 from gensim.models.doc2vec import Doc2Vec

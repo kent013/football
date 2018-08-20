@@ -65,7 +65,7 @@ function get_token_relationship_type_by_display_name($display_name, $pdo = null)
 }
 
 function get_token_type_by_token($token, $pdo = null){
-    $client = getNeo4jConnection();
+    $client = _get_neo4j_connection();
     $tx = $client->transaction();
     $result = $tx->run("MATCH (n) WHERE n.hash = {hash} RETURN n", ['hash' => $token['hash']]);
     $record = $result->getRecord();

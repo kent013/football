@@ -1,7 +1,5 @@
 <?php
-use GraphAware\Neo4j\Client\ClientBuilder;
-require_once(__DIR__ . "/../../../lib/php/util.php");
-require_once(__DIR__ . "/db_util.php");
+require_once(__DIR__ . "/../../../lib/php/src/util.php");
 require_once(__DIR__ . "/settings.php");
 
 function call_action_worker($name, $request, $response, $service){
@@ -11,6 +9,28 @@ function call_action_worker($name, $request, $response, $service){
     }catch(Exception $e){
         var_dump($e);
     }
+}
+
+function call_admin_action_worker($name, $request, $response, $service){
+    if(!auth_admin()){
+        header('WWW-Authenticate: Basic realm="Enter username and password."');
+        header('Content-Type: text/plain; charset=utf-8');
+        die('ログインが必要です');
+    }
+    return call_action_worker($name, $request, $response, $service);
+}
+
+function auth_admin(){
+    if(!isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])){
+        return false;
+    }
+    if($_SERVER['PHP_AUTH_USER'] !== getSettings('admin.username')){
+        return false;
+    }
+    if($_SERVER['PHP_AUTH_PW'] !== getSettings('admin.password')){
+        return false;
+    }
+    return true;
 }
 
 function render_template($template, $vars = []){
@@ -42,11 +62,4 @@ function getSettings($key = null){
         return $football_web_settings;
     }
     return $football_web_settings[$key];
-}
-function getNeo4jConnection($tag = "neo4j"){
-    static $client = null;
-    if(is_null($client)){
-        $client = ClientBuilder::create()->addConnection('default', getSettings($tag))->build();
-    }
-    return $client;
 }

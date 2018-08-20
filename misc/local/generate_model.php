@@ -1,11 +1,11 @@
 <?php
-require_once(__DIR__ . "/../../lib/php/Inflect.php");
+require_once(__DIR__ . "/../../lib/php/src/Inflect.php");
 
 function camelize($str) {
     return ucfirst(strtr(ucwords(strtr($str, ['_' => ' '])), [' ' => '']));
 }
 
-$sql = file_get_contents(__DIR__ . "/../../sql/setup.sql");
+$sql = file_get_contents(__DIR__ . "/../../lib/sql/setup.sql");
 
 preg_match_all('/CREATE TABLE (.+?) \(.+?\);/ms', $sql, $tables);
 $items = [];

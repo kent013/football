@@ -67,7 +67,19 @@ class FootballTokenItem(scrapy.Item):
     part_of_speech4 = scrapy.Field()
     occurrence_count = scrapy.Field()
     is_noise = scrapy.Field()
-    neo4j_node_id = scrapy.Field()
+    hash = scrapy.Field()
+    created_at = scrapy.Field()
+    updated_at = scrapy.Field()
+
+class FootballTokenTypeItem(scrapy.Item):
+    id = scrapy.Field()
+    display_name = scrapy.Field()
+    created_at = scrapy.Field()
+    updated_at = scrapy.Field()
+
+class FootballTokenRelationshipTypeItem(scrapy.Item):
+    id = scrapy.Field()
+    display_name = scrapy.Field()
     created_at = scrapy.Field()
     updated_at = scrapy.Field()
 

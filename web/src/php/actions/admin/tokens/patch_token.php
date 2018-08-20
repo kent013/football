@@ -26,7 +26,7 @@ function action_worker($request, $response, $service)
         $statement->execute();
     } else {
         try{
-            $client = getNeo4jConnection();
+            $client = _get_neo4j_connection();
             $pdo->beginTransaction();
             $tx = $client->transaction();
             $statement = $pdo->prepare("SELECT * FROM token_types WHERE id = :id");

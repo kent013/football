@@ -18,7 +18,7 @@ function action_worker($request, $response, $service) {
         $rel_types[$result['display_name']] = $result;
     }
 
-    $client = getNeo4jConnection();
+    $client = _get_neo4j_connection();
     $results = $client->run("MATCH (n) RETURN n");
     $records = $results->getRecords();
 

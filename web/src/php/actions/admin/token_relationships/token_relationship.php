@@ -11,7 +11,7 @@ function action_worker($request, $response, $service) {
     $object_token = get_token_by_id($object_token_id);
 
     try{
-        $client = getNeo4jConnection();
+        $client = _get_neo4j_connection();
         $tx = $client->transaction();
         $result = $tx->run("MATCH (a:Token)-[r]->(b:Token) WHERE a.hash = {subject_hash} AND b.hash = {object_hash} RETURN r", ['subject_hash' => $subject_token['hash'], 'object_hash' => $object_token['hash']]);
         $records = $result->getRecords();

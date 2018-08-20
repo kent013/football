@@ -10,7 +10,7 @@ function action_worker($request, $response, $service)
     }
 
     try{
-        $client = getNeo4jConnection();
+        $client = _get_neo4j_connection();
         $pdo->beginTransaction();
         $tx = $client->transaction();
         $result = $tx->push("MATCH ()-[r]-() WHERE ID(r) = {id} DELETE r", ['id' => (int)$id]);

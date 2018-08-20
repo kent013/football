@@ -2,7 +2,7 @@
 use JasonGrimes\Paginator;
 
 function action_worker($request, $response, $service) {
-    $pdo = _get_connection("FULLTEXT");
+    $pdo = _get_connection();
 
     $page = $request->param('page', 0);
     $query = $request->param('query', null);

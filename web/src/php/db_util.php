@@ -73,3 +73,15 @@ function get_token_type_by_token($token, $pdo = null){
     $label = array_shift(array_filter($token->labels(), function($v){ return $v != "Token"; }));
     return get_token_type_by_display_name($label, $pdo);
 }
+
+function get_aliases_of($name){
+    $client = _get_neo4j_connection();
+    $tx = $client->transaction();
+    $result = $tx->run("MATCH (a)-[r:AliasOf]->(b) WHERE b.name = {name} RETURN a", ['name' => $name]);
+    $record = $result->getRecords();
+    $nodes = [];
+    foreach($results as $result){
+        $nodes[] = $record->get("a");
+    }
+    return $nodes;
+}

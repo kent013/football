@@ -13,7 +13,6 @@ function call_action_worker($name, $request, $response, $service){
 
 function call_admin_action_worker($name, $request, $response, $service){
     if(!auth_admin()){
-        header('WWW-Authenticate: Basic realm="Enter username and password."');
         header('Content-Type: text/plain; charset=utf-8');
         die('ログインが必要です');
     }
@@ -21,6 +20,7 @@ function call_admin_action_worker($name, $request, $response, $service){
 }
 
 function auth_admin(){
+    header('WWW-Authenticate: Basic realm="Enter username and password."');
     if(!isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])){
         return false;
     }

@@ -59,6 +59,11 @@ analyzer = Analyzer(char_filters, tokenizer, token_filters)
 print('Start tokenize')
 
 trainings = {}
+
+count = 1;
+total = results.count()
+print('There are %d contents to process' % total)
+
 model_cache_path = script_dir + '/../../var/models/tokenized.pickle'
 if not args.renew and os.path.isfile(model_cache_path):
     with open(model_cache_path, mode='rb') as f:

@@ -27,6 +27,7 @@ class FootballFeedItem(scrapy.Item):
     description = scrapy.Field()
     site_category_id = scrapy.Field()
     site_type_id = scrapy.Field()
+    enabled = scrapy.Field()
     scraped_at = scrapy.Field()
     created_at = scrapy.Field()
     updated_at = scrapy.Field()

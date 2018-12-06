@@ -34,6 +34,7 @@ CREATE TABLE feeds (
   `description` TEXT NULL,
   `site_category_id` INT NOT NULL,
   `site_type_id` INT NOT NULL,
+  `enabled` BOOLEAN NOT NULL DEFAULT 0,
   `scraped_at` TIMESTAMP NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
   `updated_at` TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,

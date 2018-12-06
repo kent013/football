@@ -75,7 +75,7 @@ for result in results:
             continue
         if not result.extracted_content:
             continue
-        print('  ' + result.hash)
+        print('  %7d / %d, %s' % (count, total, result.hash))
         content = result.extracted_content
         words = []
         if result.language == "ja":
@@ -87,6 +87,7 @@ for result in results:
             words = word_tokenize(content)
 
         trainings[result.hash] = TaggedDocument(words, tags=[result.hash])
+        count += 1
     except Exception as e:
         print(e)
 

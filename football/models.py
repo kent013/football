@@ -66,6 +66,7 @@ class Feeds(DeclarativeBase):
     description = Column(String,nullable=False)
     site_category_id = Column(Integer,nullable=False)
     site_type_id = Column(Integer,nullable=False)
+    enabled = Column(Boolean,nullable=False,default=0)
     scraped_at = Column(DateTime,nullable=False)
     created_at = Column(DateTime,nullable=False,default=datetime.now())
     updated_at = Column(DateTime,nullable=False,default=datetime.now())

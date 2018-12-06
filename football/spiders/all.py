@@ -58,7 +58,7 @@ class AllSpider(CommonSpider):
                 self.crawl_instruction = json.loads(self.crawler_job.instruction)
 
             if self.crawler_job.type == 'initial':
-                feeds = session.query(Feeds)
+                feeds = session.query(Feeds).filter(Feeds.enabled == 1)
                 for feed in feeds:
                     self.insert_feed_job(session, 'feed', feed, 0)
                 self.mark_job_as_completed_with_session(session)

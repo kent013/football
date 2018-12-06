@@ -75,13 +75,39 @@ function get_token_type_by_token($token, $pdo = null){
 }
 
 function get_aliases_of($name){
+    $names = mb_split('\s', $name);
     $client = _get_neo4j_connection();
-    $tx = $client->transaction();
-    $result = $tx->run("MATCH (a)-[r:AliasOf]->(b) WHERE b.name = {name} RETURN a", ['name' => $name]);
-    $record = $result->getRecords();
+    $result = $client->run("MATCH (a)-[r:AliasOf]-(b) WHERE b.name IN {names} RETURN a", ['names' => $names]);
+    $records = $result->getRecords();
     $nodes = [];
-    foreach($results as $result){
+    foreach($records as $record){
         $nodes[] = $record->get("a");
     }
     return $nodes;
+}
+
+function get_type_of_token($node){
+    if(is_null($node)){
+        return null;
+    }
+    foreach($node->labels() as $label){
+        if($label != "Token"){
+            return $label;
+        }
+    }
+    return null;
+}
+
+function get_original_token($token){
+    $client = _get_neo4j_connection();
+    $result = $client->run("MATCH (a)-[:AliasOf]->(n) WHERE a.name = {name} RETURN n", ['name' => $token]);
+    if($result->size() == 0){
+        $result = $client->run("MATCH (n) WHERE n.name = {name} RETURN n", ['name' => $token]);
+        if($result->size() == 0){
+            return null;
+        }
+    }
+    $record = $result->getRecord();
+
+    return $record->get('n');
 }
